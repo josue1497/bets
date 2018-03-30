@@ -1,0 +1,26 @@
+Crear Franquicia
+
+
+Crear valores en los BEAN de dominio contants
+
+Modificar JSP para que los tome de los BEAN
+	listReportApuesta.jsp
+	listUser.jsp
+	registerUser.jsp
+	asociado00x/start.jsp
+
+Modificar tiles y Struts
+
+Crear carpeta de asociados
+
+crear hoja de style
+
+Ajustar imagenes
+
+
+hacer insert en tabla para que pueda modificar las imagenes y mensaje de bienvenida
+
+Pedir crear usuarios a Cesar para luego colocarlo en el bean
+Crear el sitio en el cpanel
+Home »Account Functions »List Accounts
+

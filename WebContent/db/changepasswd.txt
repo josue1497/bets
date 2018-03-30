@@ -1,0 +1,2 @@
+UPDATE mysql.user SET Password=PASSWORD('new_passwd') WHERE User='name_user';
+FLUSH PRIVILEGES;

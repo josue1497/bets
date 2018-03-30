@@ -1,0 +1,31 @@
+mysql -uroot -pjairo betcesc < equipo.sql
+mysql -uroot -pjairo betcesc < logros.sql
+mysql -uroot -pjairo betcesc < menu.sql
+mysql -uroot -pjairo betcesc < parametros.sql
+mysql -uroot -pjairo betcesc < rol.sql
+mysql -uroot -pjairo betcesc < reglas_pago.sql
+mysql -uroot -pjairo betcesc < status.sql
+mysql -uroot -pjairo betcesc < status_deporte.sql
+mysql -uroot -pjairo betcesc < status_juego.sql
+mysql -uroot -pjairo betcesc < status_jugada.sql
+mysql -uroot -pjairo betcesc < tipo_cuenta.sql
+mysql -uroot -pjairo betcesc < campeonato.sql
+mysql -uroot -pjairo betcesc < deporte.sql
+mysql -uroot -pjairo betcesc < usuario.sql
+mysql -uroot -pjairo betcesc < liga.sql
+mysql -uroot -pjairo betcesc < lanzador.sql
+mysql -uroot -pjairo betcesc < equipo_liga.sql
+mysql -uroot -pjairo betcesc < rol_menu.sql
+
+--mysql -uroot -pjairo betcesc < menu_user.sql
+--mysql -uroot -pjairo betcesc < juego.sql
+--mysql -uroot -pjairo betcesc < jugada.sql
+--mysql -uroot -pjairo betcesc < juego_equipo.sql
+--mysql -uroot -pjairo betcesc < usuario_juego_equipo.sql
+--mysql -uroot -pjairo betcesc < juego_equipo_lanzador.sql
+--mysql -uroot -pjairo betcesc < jugada_juego_equipo.sql
+--mysql -uroot -pjairo betcesc < usuario_juego.sql
+--mysql -uroot -pjairo betcesc < usuario_admin.sql
+--mysql -uroot -pjairo betcesc < cuenta_jugador.sql
+
+

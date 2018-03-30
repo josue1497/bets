@@ -1,0 +1,33 @@
+<!DOCTYPE  HTML  PUBLIC  "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<script language="javascript">
+<!--
+function getMacAddress() {
+	macAddress="";
+	try {
+      var locator = new ActiveXObject ("WbemScripting.SWbemLocator");
+      var service = locator.ConnectServer(".");
+      var properties = service.ExecQuery("SELECT * FROM Win32_NetworkAdapter");
+      var e = new Enumerator (properties);
+      var sep="";
+      var notValid1 = "Adaptador asínc. de RAS";
+      var notValid2 = "Minipuerto del administrador de paquetes";
+      var notValid3 = "Deterministic Network Enhancer Miniport";
+      for (;!e.atEnd();e.moveNext ()) {
+            var p = e.item ();
+            if(p.MACAddress!=null && p.Caption.indexOf(notValid1)==-1 && p.Caption.indexOf(notValid2)==-1 && p.Caption.indexOf(notValid3)==-1) {
+	            macAddress+=sep+p.MACAddress;
+	            sep="|";
+	         }
+	  }
+	} catch(e) {}
+	return macAddress;
+}
+document.write(getMacAddress());
+-->
+</script>
+</head>
+<body>
+</body>
+</html>

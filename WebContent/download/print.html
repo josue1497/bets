@@ -1,0 +1,29 @@
+<html>
+<head>
+<script language="javascript">
+// verificar si lo podemos enviar
+// directamente al pool de impresion de window
+function WriteToFile()
+{
+var fso = new ActiveXObject("Scripting.FileSystemObject");
+var s = fso.CreateTextFile("C:\\printer\\ticket.txt", true);
+s.WriteLine('Hello');
+s.WriteLine(window.navigator.userAgent.toLowerCase());
+s.Close();
+}
+
+function ini() {
+	var consola = new ActiveXObject("WScript.Shell");
+	consola.run('c:\\printer\\hacer.bat "vence en tres dias"');
+
+}
+</script>
+</head>
+<body>
+<script>
+WriteToFile();
+
+</script>
+
+</body>
+</html>

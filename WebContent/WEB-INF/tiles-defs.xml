@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE tiles-definitions PUBLIC
+          "-//Apache Software Foundation//DTD Tiles Configuration//EN"
+          "http://jakarta.apache.org/struts/dtds/tiles-config.dtd">
+
+<tiles-definitions>
+
+
+	<definition name="start" path="/views/layouts/templateHome.jsp">
+		<put name="header" value="/views/common/headerHome.jsp" />
+		<put name="headerName" value="/views/common/headerNameStart.jsp" />
+		<put name="body" value="/views/frontend/start.jsp" />
+	</definition>
+
+	<definition name="start000" extends="start">
+		<put name="header" value="/views/common/headerHome.jsp?bgcolor=#000" />
+		<put name="body" value="/views/frontend/start.jsp" />
+	</definition>
+	<definition name="start001" extends="start">
+		<put name="headerName" value="/views/common/vacio.jsp" />
+		<put name="body" value="/asociados/001/start.jsp" />
+	</definition>
+	<definition name="start002" extends="start">
+		<put name="headerName" value="/views/common/vacio.jsp" />
+		<put name="body" value="/asociados/002/start.jsp" />
+	</definition>
+	<definition name="start003" extends="start">
+		<put name="headerName" value="/views/common/vacio.jsp" />
+		<put name="body" value="/asociados/003/start.jsp" />
+	</definition>
+	<definition name="start004" extends="start">
+
+		<put name="headerName" value="/views/common/vacio.jsp" />
+		<put name="body" value="/asociados/004/start.jsp" />
+	</definition>
+
+	<definition name="start005" extends="start">
+		<put name="headerName" value="/views/common/vacio.jsp" />
+		<put name="body" value="/asociados/005/start.jsp" />
+	</definition>
+
+	<definition name="start006" extends="start">
+		<put name="headerName" value="/views/common/vacio.jsp" />
+		<put name="body" value="/asociados/006/start.jsp" />
+	</definition>
+
+
+	<definition name="start007" extends="start">
+		<put name="headerName" value="/views/common/vacio.jsp" />
+		<put name="body" value="/asociados/007/start.jsp" />
+	</definition>
+
+	<definition name="start008" extends="start">
+		<put name="headerName" value="/views/common/vacio.jsp" />
+		<put name="body" value="/asociados/008/start.jsp" />
+	</definition>
+
+
+	<definition name="start009" extends="start">
+		<put name="headerName" value="/views/common/vacio.jsp" />
+		<put name="body" value="/asociados/009/start.jsp" />
+	</definition>
+
+	<definition name="start010" extends="start">
+		<put name="headerName" value="/views/common/vacio.jsp" />
+		<put name="body" value="/asociados/010/start.jsp" />
+	</definition>
+
+	<definition name="start011" extends="start">
+		<put name="headerName" value="/views/common/vacio.jsp" />
+		<put name="body" value="/asociados/011/start.jsp" />
+	</definition>
+
+	<definition name="start012" extends="start">
+		<put name="headerName" value="/views/common/vacio.jsp" />
+		<put name="body" value="/asociados/012/start.jsp" />
+	</definition>
+
+
+	<definition name="start013" extends="start">
+		<put name="headerName" value="/views/common/vacio.jsp" />
+		<put name="body" value="/asociados/013/start.jsp" />
+	</definition>
+
+	<definition name="start014" extends="start">
+		<put name="headerName" value="/views/common/vacio.jsp" />
+		<put name="body" value="/asociados/014/start.jsp" />
+	</definition>
+
+
+	<definition name="start015" extends="start">
+		<put name="headerName" value="/views/common/vacio.jsp" />
+		<put name="body" value="/asociados/015/start.jsp" />
+	</definition>
+	<definition name="start016" extends="start">
+		<put name="headerName" value="/views/common/vacio.jsp" />
+		<put name="body" value="/asociados/016/start.jsp" />
+	</definition>
+	<definition name="start017" extends="start">
+		<put name="headerName" value="/views/common/vacio.jsp" />
+		<put name="body" value="/asociados/017/start.jsp" />
+	</definition>
+	<definition name="start018" extends="start">
+		<put name="headerName" value="/views/common/vacio.jsp" />
+		<put name="body" value="/asociados/018/start.jsp" />
+	</definition>
+	
+	<definition name="start_session" path="/views/layouts/templateSession.jsp">
+		<put name="header" value="/views/common/header.jsp" />
+		<put name="body" value="/views/game/startSession.jsp" />
+	</definition>
+
+	<definition name="start_game" path="/views/layouts/templateMain.jsp">
+		<put name="header" value="/views/common/header.jsp" />
+		<put name="headerName" value="/views/common/headerName.jsp" />
+		<put name="body" value="/views/game/startGame.jsp" />
+	</definition>
+
+	<definition name="start_game_play" path="/views/layouts/templateMainPlay.jsp">
+		<put name="header" value="/views/common/header.jsp" />
+		<put name="headerName" value="/views/common/headerName.jsp" />
+		<put name="body" value="/views/game/startGame.jsp" />
+	</definition>
+
+
+	<definition name="resultados" path="/views/frontend/resultados.jsp" />
+
+	<!-- BACK -->
+	<definition name="list_user_frame" path="/views/back/listUserFrame.jsp"></definition>
+
+	<definition name="list_user" extends="start_game">
+		<put name="body" value="/views/back/listUser.jsp" />
+	</definition>
+
+	<definition name="list_user_play" extends="start_game">
+		<put name="body" value="/views/back/listUserPlay.jsp" />
+	</definition>
+
+	<definition name="list_user_play_detail" extends="start_game">
+		<put name="body" value="/views/back/listUserPlayDetail.jsp" />
+	</definition>
+
+	<definition name="register_user" extends="start_game">
+		<put name="body" value="/views/back/registerUser.jsp" />
+	</definition>
+
+	<definition name="register_user_player" extends="start">
+		<put name="body" value="/views/back/registerUserPlayer.jsp" />
+	</definition>
+
+
+	<definition name="register_saldo" extends="start_game">
+		<put name="body" value="/views/back/registerSaldo.jsp" />
+	</definition>
+
+	<definition name="deportes" extends="start_game">
+		<put name="body" value="/views/back/deportes.jsp" />
+	</definition>
+
+	<definition name="list_game" extends="start_game">
+		<put name="body" value="/views/back/listGame.jsp" />
+	</definition>
+
+	<definition name="register_game" extends="start_game">
+		<put name="body" value="/views/back/registerGame.jsp" />
+	</definition>
+
+	<definition name="register_game_multi" extends="start_game">
+		<put name="body" value="/views/back/registerGameMulti.jsp" />
+	</definition>
+
+	<definition name="register_game_open" extends="start_game">
+		<put name="body" value="/views/back/registerGameOpen.jsp" />
+	</definition>
+
+	<definition name="register_game_multi_open" extends="start_game">
+		<put name="body" value="/views/back/registerGameMultiOpen.jsp" />
+	</definition>
+
+	<definition name="register_game_close" extends="start_game">
+		<put name="body" value="/views/back/registerGameClose.jsp" />
+	</definition>
+
+	<definition name="register_game_multi_close" extends="start_game">
+		<put name="body" value="/views/back/registerGameMultiClose.jsp" />
+	</definition>
+
+	<definition name="list_game_play_speed" extends="start_game">
+		<put name="body" value="/views/back/listGamePlaySpeed.jsp" />
+	</definition>
+
+	<definition name="list_game_play" extends="start_game">
+		<put name="body" value="/views/back/listGamePlay.jsp" />
+	</definition>
+
+	<definition name="print_ticket" path="/views/back/printTicket.jsp" />
+
+	<definition name="print_ticket_java" path="/views/back/printTicketJava.jsp" />
+
+	<definition name="show_ticket" extends="start_game">
+		<put name="body" value="/views/back/showTicket.jsp" />
+	</definition>
+
+	<definition name="show_ticket_simple" path="/views/back/showTicketSimple.jsp" />
+
+	<definition name="show_ticket_print" path="/views/back/showTicketPrint.jsp" />
+
+	<definition name="show_calculator" path="/views/back/showCalculator.jsp" />
+
+	<definition name="list_play" extends="start_game">
+		<put name="body" value="/views/back/listPlay.jsp" />
+	</definition>
+
+	<definition name="list_play_pending" extends="start_game">
+		<put name="body" value="/views/back/listPlayPending.jsp" />
+	</definition>
+
+
+	<definition name="list_report" extends="start_game">
+		<put name="body" value="/views/back/listReport.jsp" />
+	</definition>
+
+	<definition name="list_report_ticket" extends="start_game">
+		<put name="body" value="/views/back/listReportTicket.jsp" />
+	</definition>
+
+	<definition name="list_report_BETCESC" extends="start_game">
+		<put name="body" value="/views/back/listReportApuesta.jsp" />
+	</definition>
+
+	<definition name="list_report_resultado" extends="start_game">
+		<put name="body" value="/views/back/listReportResultado.jsp" />
+	</definition>
+
+	<definition name="list_report_apuesta_por_equipo" extends="start_game">
+		<put name="body" value="/views/back/listReportApuestaPorEquipo.jsp" />
+	</definition>
+
+	<definition name="list_report_resultado_vendedor" extends="start_game">
+		<put name="body" value="/views/back/listReportResultadoVendedor.jsp" />
+	</definition>
+
+	<definition name="list_logro_home" extends="start">
+		<put name="body" value="/views/frontend/listLogro.jsp" />
+	</definition>
+
+	<definition name="list_logro" extends="start_session">
+		<put name="body" value="/views/frontend/listLogro.jsp" />
+	</definition>
+
+	<definition name="list_logro_por_centro" extends="start_game">
+		<put name="body" value="/views/back/listLogroPorCentro.jsp" />
+	</definition>
+
+	<definition name="list_parametros" extends="start_game">
+		<put name="body" value="/views/back/listParametros.jsp" />
+	</definition>
+
+	<definition name="register_parametros" extends="start_game">
+		<put name="body" value="/views/back/registerParametros.jsp" />
+	</definition>
+
+	<definition name="change_password" extends="start_game">
+		<put name="body" value="/views/back/changePassword.jsp" />
+	</definition>
+
+	<definition name="seguridad" extends="start_game">
+		<put name="body" value="/views/back/seguridad.jsp" />
+	</definition>
+
+	<definition name="liga" path="/views/back/liga.jsp" />
+
+	<definition name="quienes" extends="start">
+		<put name="body" value="/views/frontend/quienes.jsp" />
+	</definition>
+
+	<definition name="politica" extends="start">
+		<put name="body" value="/views/frontend/politica.jsp" />
+	</definition>
+
+	<definition name="privacidad" extends="start">
+		<put name="body" value="/views/frontend/privacidad.jsp" />
+	</definition>
+
+	<definition name="codigos" extends="start">
+		<put name="body" value="/views/frontend/codigos.jsp" />
+	</definition>
+
+	<definition name="apuestas" extends="start">
+		<put name="body" value="/views/frontend/apuestas.jsp" />
+	</definition>
+
+	<definition name="reglas" extends="start">
+		<put name="body" value="/views/frontend/reglas.jsp" />
+	</definition>
+
+	<definition name="contactenos" extends="start">
+		<put name="body" value="/views/frontend/contactenos.jsp" />
+	</definition>
+
+	<definition name="contactenos_exito" extends="start">
+		<put name="body" value="/views/frontend/contactenosExito.jsp" />
+	</definition>
+
+	<definition name="contactenos_error" extends="start">
+		<put name="body" value="/views/frontend/contactenosError.jsp" />
+	</definition>
+
+	<definition name="list_logros_default" path="/views/back/listLogrosDefault.jsp" />
+
+	<definition name="list_deporte_combinacion" path="/views/back/listDeporteCombinacion.jsp" />
+
+	<definition name="show_user_message" path="/views/back/showUserMessage.jsp" />
+
+	<definition name="list_images" path="/views/back/listImages.jsp" />
+
+	<definition name="_loadImage" path="/views/game/loadImage.jsp" />
+
+
+	<!-- REPORTES -->
+	<definition name="list_sell_day" path="/views/back/listSellDay.jsp" />
+	<definition name="list_sell_day_resume" path="/views/back/listSellDayResume.jsp" />
+	<definition name="list_resultado" path="/views/back/listResultado.jsp" />
+	<definition name="list_apuesta_por_equipo" path="/views/back/listApuestaPorEquipo.jsp" />
+	<definition name="list_resultado_vendedor" path="/views/back/listResultadoVendedor.jsp" />
+	<definition name="list_pay_day" path="/views/back/listPayDay.jsp" />
+	<definition name="list_logro_report" path="/views/back/listLogroReport.jsp" />
+	<definition name="list_logro_report_old" path="/views/back/listLogroReportOld.jsp" />
+	<definition name="list_report_BETCESC_equipo" path="/views/back/listReportApuestaEquipo.jsp" />
+
+	<!-- AJAX -->
+	<definition name="consultar" path="/views/back/consultar.jsp" />
+
+</tiles-definitions>
+

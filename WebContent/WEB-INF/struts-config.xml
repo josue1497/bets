@@ -1,0 +1,481 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN" "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+<struts-config>
+
+	<form-beans>
+		<!-- FRONT -->
+		<form-bean name="registerSession"
+			type="com.betcesc.game.ctrl.front.RegisterSessionActionForm"></form-bean>
+		<form-bean name="Contactenos"
+			type="com.betcesc.game.ctrl.front.ContactenosActionForm" />
+
+		<!-- BACK -->
+		<form-bean name="registerUser"
+			type="com.betcesc.game.ctrl.back.RegisterUserActionForm"></form-bean>
+		<form-bean name="registerGame"
+			type="com.betcesc.game.ctrl.back.RegisterGameActionForm"></form-bean>
+		<form-bean name="registerPlay"
+			type="com.betcesc.game.ctrl.back.RegisterPlayActionForm"></form-bean>
+		<form-bean name="registerSaldo"
+			type="com.betcesc.game.ctrl.back.RegisterSaldoActionForm"></form-bean>
+		<form-bean name="registerParametros"
+			type="com.betcesc.game.ctrl.back.RegisterParametrosActionForm"></form-bean>
+		<form-bean name="seguridad"
+			type="com.betcesc.game.ctrl.back.SeguridadActionForm" />
+	</form-beans>
+
+
+
+	<global-forwards>
+		<forward name="start" path="/start.do" />
+		<forward name="end" path="/endSession.do" />
+	</global-forwards>
+
+	<action-mappings>
+		<action path="/secureStart" type="com.betcesc.game.ctrl.front.SecureStartAction" />
+
+		<action path="/start" type="com.betcesc.game.ctrl.front.StartAction">
+			<forward name="success000" path="start000"></forward>
+			<forward name="success001" path="start001"></forward>
+			<forward name="success002" path="start002"></forward>
+			<forward name="success003" path="start003"></forward>
+			<forward name="success004" path="start004"></forward>
+			<forward name="success005" path="start005"></forward>
+			<forward name="success006" path="start006"></forward>
+			<forward name="success007" path="start007"></forward>
+			<forward name="success008" path="start008"></forward>
+			<forward name="success009" path="start009"></forward>
+			<forward name="success010" path="start010"></forward>
+			<forward name="success011" path="start011"></forward>
+			<forward name="success012" path="start012"></forward>
+			<forward name="success013" path="start013"></forward>
+			<forward name="success014" path="start014"></forward>
+			<forward name="success015" path="start015"></forward>
+			<forward name="success016" path="start016"></forward>
+			<forward name="success017" path="start017"></forward>
+			<forward name="success018" path="start018"></forward>
+			<forward name="success999" path="start000"></forward>
+		</action>
+
+		<action path="/startSession" type="com.betcesc.game.ctrl.front.StartSessionAction">
+			<forward name="success" path="start_session"></forward>
+		</action>
+
+		<action path="/endSession" type="com.betcesc.game.ctrl.front.EndSessionAction">
+			<forward name="success000" path="/start.do?dominio=000"></forward>
+			<forward name="success001" path="/start.do?dominio=001"></forward>
+			<forward name="success002" path="/start.do?dominio=002"></forward>
+			<forward name="success003" path="/start.do?dominio=003"></forward>
+			<forward name="success004" path="/start.do?dominio=004"></forward>
+			<forward name="success005" path="/start.do?dominio=005"></forward>
+			<forward name="success006" path="/start.do?dominio=006"></forward>
+			<forward name="success007" path="/start.do?dominio=007"></forward>
+			<forward name="success008" path="/start.do?dominio=008"></forward>
+			<forward name="success009" path="/start.do?dominio=009"></forward>
+			<forward name="success010" path="/start.do?dominio=010"></forward>
+			<forward name="success011" path="/start.do?dominio=011"></forward>
+			<forward name="success012" path="/start.do?dominio=012"></forward>
+			<forward name="success013" path="/start.do?dominio=013"></forward>
+			<forward name="success014" path="/start.do?dominio=014"></forward>
+			<forward name="success015" path="/start.do?dominio=015"></forward>
+			<forward name="success016" path="/start.do?dominio=016"></forward>
+			<forward name="success017" path="/start.do?dominio=017"></forward>
+			<forward name="success018" path="/start.do?dominio=018"></forward>
+
+		</action>
+
+		<action path="/startGame" type="com.betcesc.game.ctrl.common.StartGameAction">
+			<forward name="success" path="start_game"></forward>
+		</action>
+
+		<action path="/registerSession"
+			type="com.betcesc.game.ctrl.front.RegisterSessionAction" name="registerSession"
+			input="/start.do" scope="request">
+			<forward name="success" path="/startGame.do"></forward>
+			<forward name="error" path="/start.do"></forward>
+		</action>
+
+		<action path="/resultados" type="com.betcesc.game.ctrl.front.ResultadosAction">
+			<forward name="success" path="resultados"></forward>
+		</action>
+
+
+		<action path="/inicio" forward="/startGame.do" />
+
+		<action path="/listUserFrame" type="com.betcesc.game.ctrl.back.ListUserAction"
+			scope="request">
+			<forward name="success" path="list_user_frame"></forward>
+		</action>
+
+
+		<action path="/listUser" type="com.betcesc.game.ctrl.back.ListUserAction"
+			scope="request">
+			<forward name="success" path="list_user"></forward>
+		</action>
+		<action path="/registerUser" type="com.betcesc.game.ctrl.back.RegisterUserAction"
+			scope="request">
+			<forward name="success" path="register_user"></forward>
+		</action>
+
+		<action path="/registerUserPlayer"
+			type="com.betcesc.game.ctrl.back.RegisterUserPlayerAction" scope="request">
+			<forward name="success_4" path="register_user_player"></forward>
+		</action>
+
+		<action path="/registerUserSave"
+			type="com.betcesc.game.ctrl.back.RegisterUserSaveAction" name="registerUser"
+			input="/registerUser.do" scope="request">
+			<forward name="success" path="/listUser.do"></forward>
+			<forward name="error" path="/registerUser.do"></forward>
+		</action>
+
+		<action path="/registerUserSavePlayer"
+			type="com.betcesc.game.ctrl.back.RegisterUserSavePlayerAction" name="registerUser"
+			input="/registerUserPlayer.do" scope="request">
+			<forward name="success" path="/inicio.do"></forward>
+			<forward name="error" path="/registerUserPlayer.do"></forward>
+		</action>
+
+		<action path="/listUserPlay" type="com.betcesc.game.ctrl.back.ListUserPlayAction"
+			scope="request">
+			<forward name="success" path="list_user_play"></forward>
+		</action>
+		<action path="/registerSaldo" type="com.betcesc.game.ctrl.back.RegisterSaldoAction"
+			scope="request">
+			<forward name="success" path="register_saldo"></forward>
+			<forward name="error" path="/listUserPlay.do"></forward>
+		</action>
+		<action path="/registerSaldoSave"
+			type="com.betcesc.game.ctrl.back.RegisterSaldoSaveAction" name="registerSaldo"
+			input="/registerSaldo.do" scope="request">
+			<forward name="success" path="/listUserPlay.do"></forward>
+		</action>
+		<action path="/listUserPlayDetail"
+			type="com.betcesc.game.ctrl.back.ListUserPlayDetailAction" scope="request">
+			<forward name="success" path="list_user_play_detail"></forward>
+		</action>
+
+
+		<action path="/deportes" type="com.betcesc.game.ctrl.back.DeportesAction"
+			scope="request">
+			<forward name="success" path="deportes"></forward>
+		</action>
+
+
+		<action path="/listGame" type="com.betcesc.game.ctrl.back.ListGameAction"
+			scope="request">
+			<forward name="success" path="list_game"></forward>
+		</action>
+
+		<action path="/registerGame" type="com.betcesc.game.ctrl.back.RegisterGameAction"
+			scope="request">
+			<forward name="success" path="register_game"></forward>
+			<forward name="successOpen" path="register_game_open"></forward>
+			<forward name="successClose" path="register_game_close"></forward>
+			<forward name="error" path="/listGame.do"></forward>
+		</action>
+
+		<action path="/registerGameMulti"
+			type="com.betcesc.game.ctrl.back.RegisterGameMultiAction" scope="request">
+			<forward name="success" path="register_game_multi"></forward>
+			<forward name="successOpen" path="register_game_multi_open"></forward>
+			<forward name="successClose" path="register_game_multi_close"></forward>
+			<forward name="error" path="/listGame.do"></forward>
+		</action>
+
+		<action path="/registerGameSave"
+			type="com.betcesc.game.ctrl.back.RegisterGameSaveAction" name="registerGame"
+			input="/registerGame.do" scope="request">
+			<forward name="success" path="/listGame.do"></forward>
+			<forward name="successAdd" path="/registerGame.do"></forward>
+			<forward name="successAddMulti" path="/registerGameMulti.do"></forward>
+			<forward name="error" path="/registerGame.do"></forward>
+			<forward name="errorMulti" path="/registerGameMulti.do"></forward>
+		</action>
+
+
+		<action path="/listGamePlaySpeed"
+			type="com.betcesc.game.ctrl.back.ListGamePlaySpeedAction" scope="request">
+			<forward name="success" path="list_game_play_speed"></forward>
+		</action>
+		<action path="/registerPlaySaveSpeed"
+			type="com.betcesc.game.ctrl.back.RegisterPlaySaveSpeedAction" name="registerPlay"
+			input="/listGamePlaySpeed.do" scope="request">
+			<forward name="success" path="/listGamePlaySpeed.do"></forward>
+		</action>
+
+
+
+		<action path="/listGamePlay" type="com.betcesc.game.ctrl.back.ListGamePlayAction"
+			scope="request">
+			<forward name="success" path="list_game_play"></forward>
+			<forward name="successCalculadora" path="show_calculator"></forward>
+		</action>
+
+		<action path="/registerPlaySave"
+			type="com.betcesc.game.ctrl.back.RegisterPlaySaveAction" name="registerPlay"
+			input="/listGamePlay.do" scope="request">
+			<forward name="success" path="/listGamePlay.do"></forward>
+		</action>
+
+		<action path="/printTicket" type="com.betcesc.game.ctrl.back.PrintTicketAction">
+			<forward name="success" path="print_ticket"></forward>
+		</action>
+		<action path="/printTicketJava" type="com.betcesc.game.ctrl.back.PrintTicketAction">
+			<forward name="success" path="print_ticket_java"></forward>
+		</action>
+
+
+		<action path="/showTicket" type="com.betcesc.game.ctrl.back.ShowTicketAction">
+			<forward name="success" path="show_ticket"></forward>
+		</action>
+
+		<action path="/showTicketSimple" type="com.betcesc.game.ctrl.back.ShowTicketAction">
+			<forward name="success" path="show_ticket_simple"></forward>
+		</action>
+
+		<action path="/showTicketPrint" type="com.betcesc.game.ctrl.back.ShowTicketAction">
+			<forward name="success" path="show_ticket_print"></forward>
+		</action>
+
+		<action path="/payPlay" type="com.betcesc.game.ctrl.back.PayPlayAction">
+			<forward name="success" path="/showTicket.do"></forward>
+		</action>
+		<action path="/payPlaySimple" type="com.betcesc.game.ctrl.back.PayPlayAction">
+			<forward name="success" path="/showTicketSimple.do"></forward>
+		</action>
+
+		<action path="/deletePlay" type="com.betcesc.game.ctrl.back.DeletePlayAction">
+			<forward name="success" path="/listPlay.do"></forward>
+			<forward name="successPending" path="/listPlayPending.do"></forward>
+		</action>
+
+		<action path="/listPlay" type="com.betcesc.game.ctrl.back.ListPlayAction"
+			scope="request">
+			<forward name="success" path="list_play"></forward>
+		</action>
+
+		<action path="/listPlayPending" type="com.betcesc.game.ctrl.back.ListPlayPendingAction"
+			scope="request">
+			<forward name="success" path="list_play_pending"></forward>
+		</action>
+
+		<action path="/showCalculator" type="com.betcesc.game.ctrl.back.ShowCalculatorAction"
+			scope="request">
+			<forward name="success" path="show_calculator"></forward>
+		</action>
+
+		<!-- REPORTES -->
+		<action path="/listReport" type="com.betcesc.game.ctrl.back.ListReportAction"
+			scope="request">
+			<forward name="success" path="list_report"></forward>
+		</action>
+
+		<action path="/listReportTicket"
+			type="com.betcesc.game.ctrl.back.ListReportTicketAction" scope="request">
+			<forward name="success" path="list_report_ticket"></forward>
+		</action>
+		<action path="/listSellDay" type="com.betcesc.game.ctrl.back.ListSellDayAction"
+			scope="request">
+			<forward name="success" path="list_sell_day"></forward>
+		</action>
+		<action path="/listSellDayResume"
+			type="com.betcesc.game.ctrl.back.ListSellDayResumeAction" scope="request">
+			<forward name="success" path="list_sell_day_resume"></forward>
+		</action>
+		<action path="/listResultado" type="com.betcesc.game.ctrl.back.ListResultadoAction"
+			scope="request">
+			<forward name="success" path="list_resultado"></forward>
+		</action>
+		<action path="/listApuestaPorEquipo"
+			type="com.betcesc.game.ctrl.back.ListApuestaPorEquipoAction" scope="request">
+			<forward name="success" path="list_apuesta_por_equipo"></forward>
+		</action>
+		<action path="/listResultadoVendedor"
+			type="com.betcesc.game.ctrl.back.ListResultadoVendedorAction" scope="request">
+			<forward name="success" path="list_resultado_vendedor"></forward>
+		</action>
+
+		<action path="/listReportApuesta"
+			type="com.betcesc.game.ctrl.back.ListReportApuestaAction" scope="request">
+			<forward name="success" path="list_report_BETCESC"></forward>
+		</action>
+		<action path="/listReportUser"
+			type="com.betcesc.game.ctrl.back.ListReportApuestaEquipoAction"
+			scope="request">
+			<forward name="success" path="list_report_BETCESC_equipo"></forward>
+		</action>
+
+		<action path="/listReportResultado"
+			type="com.betcesc.game.ctrl.back.ListReportResultadoAction" scope="request">
+			<forward name="success" path="list_report_resultado"></forward>
+		</action>
+
+		<action path="/listReportApuestaPorEquipo"
+			type="com.betcesc.game.ctrl.back.ListReportApuestaPorEquipoAction"
+			scope="request">
+			<forward name="success" path="list_report_apuesta_por_equipo"></forward>
+		</action>
+
+		<action path="/listReportResultadoVendedor"
+			type="com.betcesc.game.ctrl.back.ListReportResultadoVendedorAction"
+			scope="request">
+			<forward name="success" path="list_report_resultado_vendedor"></forward>
+		</action>
+
+		<action path="/listPayDay" type="com.betcesc.game.ctrl.back.ListPayDayAction"
+			scope="request">
+			<forward name="success" path="list_pay_day"></forward>
+		</action>
+
+		<action path="/listLogroReport" type="com.betcesc.game.ctrl.back.ListLogroReportAction"
+			scope="request">
+			<forward name="success" path="list_logro_report"></forward>
+			<forward name="successOld" path="list_logro_report_old"></forward>
+		</action>
+
+		<action path="/listLogroReportPorCentro"
+			type="com.betcesc.game.ctrl.back.ListLogroReportPorCentroAction"
+			scope="request">
+			<forward name="success" path="list_logro_report"></forward>
+			<forward name="successOld" path="list_logro_report_old"></forward>
+		</action>
+
+		<action path="/listLogrosDefault"
+			type="com.betcesc.game.ctrl.back.ListLogrosDefaultAction" scope="request">
+			<forward name="success" path="list_logros_default"></forward>
+		</action>
+
+
+		<action path="/mensajeAjax" type="com.betcesc.game.ctrl.back.MensajeAction" />
+
+		<action path="/buscarAjax" type="com.betcesc.game.ctrl.back.BuscarAction" />
+		<action path="/agregarAjax" type="com.betcesc.game.ctrl.back.AgregarAction" />
+		<action path="/llenarAjax" type="com.betcesc.game.ctrl.back.LlenarAction" />
+		<action path="/eliminarAjax" type="com.betcesc.game.ctrl.back.EliminarAction" />
+		<action path="/llenarUsuarioAjax" type="com.betcesc.game.ctrl.back.LlenarUsuarioAction" />
+		<action path="/referenciaAjax" type="com.betcesc.game.ctrl.back.ReferenciaAction" />
+		<action path="/consultarAjax" type="com.betcesc.game.ctrl.back.ConsultarAction">
+			<forward name="success" path="consultar"></forward>
+		</action>
+
+
+		<action path="/listLogroHome" type="com.betcesc.game.ctrl.back.ListLogroAction"
+			scope="request">
+			<forward name="success" path="list_logro_home"></forward>
+		</action>
+		<action path="/listLogro" type="com.betcesc.game.ctrl.back.ListLogroAction"
+			scope="request">
+			<forward name="success" path="list_logro"></forward>
+		</action>
+		<action path="/listLogroPorCentro"
+			type="com.betcesc.game.ctrl.back.ListLogroPorCentroAction" scope="request">
+			<forward name="success" path="list_logro_por_centro"></forward>
+		</action>
+
+		<action path="/listDeporteCombinacion"
+			type="com.betcesc.game.ctrl.back.ListDeporteCombinacionAction" scope="request">
+			<forward name="success" path="list_deporte_combinacion"></forward>
+		</action>
+
+		<action path="/registerDeporteCombinacion"
+			type="com.betcesc.game.ctrl.back.RegisterDeporteCombinacionAction"
+			scope="request">
+			<forward name="success" path="/listDeporteCombinacion.do"></forward>
+		</action>
+
+		<action path="/listParametros" type="com.betcesc.game.ctrl.back.ListParametrosAction"
+			scope="request">
+			<forward name="success" path="list_parametros"></forward>
+		</action>
+		<action path="/registerParametros"
+			type="com.betcesc.game.ctrl.back.RegisterParametrosAction" scope="request">
+			<forward name="success" path="register_parametros"></forward>
+		</action>
+		<action path="/registerParametrosSave"
+			type="com.betcesc.game.ctrl.back.RegisterParametrosSaveAction" name="registerParametros"
+			input="/registerParametros.do" scope="request">
+			<forward name="success" path="/listParametros.do"></forward>
+			<forward name="error" path="/registerParametros.do"></forward>
+		</action>
+
+		<action path="/changePassword" type="com.betcesc.game.ctrl.back.ChangePasswordAction"
+			scope="request">
+			<forward name="success" path="change_password"></forward>
+		</action>
+		<action path="/changePasswordSave"
+			type="com.betcesc.game.ctrl.back.ChangePasswordSaveAction">
+			<forward name="success" path="/inicio.do" />
+			<forward name="error" path="/inicio.do" />
+		</action>
+
+
+		<action path="/showUserMessage" type="com.betcesc.game.ctrl.back.ShowUserMessageAction">
+			<forward name="success" path="show_user_message"></forward>
+		</action>
+
+		<action path="/updateMessage" type="com.betcesc.game.ctrl.back.UpdateMessageAction"
+			scope="request">
+			<forward name="success" path="/inicio.do"></forward>
+		</action>
+
+		<action path="/listImages" type="com.betcesc.game.ctrl.back.ListImagesAction"
+			scope="request">
+			<forward name="success" path="list_images"></forward>
+		</action>
+
+		<action path="/processImages" type="com.betcesc.game.ctrl.back.ProcessImagesAction"
+			scope="request">
+			<forward name="success" path="list_images"></forward>
+		</action>
+
+
+		<action path="/quienes" forward="quienes" />
+		<action path="/politica" forward="politica" />
+		<action path="/privacidad" forward="privacidad" />
+		<action path="/codigos" forward="codigos" />
+		<action path="/jugadas" forward="apuestas" />
+		<action path="/apuestas" forward="apuestas" />
+		<action path="/reglas" forward="reglas" />
+
+		<action path="/contactenos" forward="contactenos" />
+		<action path="/contactenosEnviar" type="com.betcesc.game.ctrl.front.ContactenosAction"
+			name="Contactenos">
+			<forward name="exito" path="contactenos_exito" />
+			<forward name="error" path="contactenos_error" />
+		</action>
+
+
+		<action path="/seguridad" type="com.betcesc.game.ctrl.back.SeguridadAction"
+			scope="request">
+			<forward name="success" path="seguridad"></forward>
+		</action>
+		<action path="/seguridadSave" type="com.betcesc.game.ctrl.back.SeguridadSaveAction"
+			name="seguridad">
+			<forward name="success" path="/listUser.do" />
+			<forward name="error" path="/listUser.do" />
+		</action>
+
+		<action path="/liga" type="com.betcesc.game.ctrl.back.LigaAction"
+			scope="request">
+			<forward name="success" path="liga"></forward>
+		</action>
+
+		<action path="/loadImage" type="com.betcesc.game.ctrl.back.LoadImageAction">
+			<forward name="success" path="_loadImage"></forward>
+		</action>
+
+	</action-mappings>
+
+	<message-resources parameter="ApplicationResources" />
+
+	<plug-in className="org.apache.struts.tiles.TilesPlugin">
+		<set-property property="definitions-config" value="/WEB-INF/tiles-defs.xml" />
+		<set-property property="definitions-debug" value="0" />
+		<set-property property="definitions-parser-details"
+			value="0" />
+		<set-property property="definitions-parser-validate"
+			value="true" />
+	</plug-in>
+
+</struts-config>

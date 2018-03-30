@@ -1,0 +1,220 @@
+ALTER TABLE usuario ADD constraint correo_uq UNIQUE (correo);
+ALTER TABLE usuario ADD constraint cedula_uq UNIQUE (cedula);
+
+
+ALTER TABLE parametros MODIFY valor varchar(1000);
+
+
+// 06/09/2010
+ALTER TABLE juego_equipo ADD referencia_super_runline varchar(10) not null default '';
+
+ALTER TABLE usuario_juego_equipo ADD super_spread double;
+ALTER TABLE usuario_juego_equipo ADD super_spread_logro int(11);
+
+ALTER TABLE juego ADD super_spread_activo int(1) not null;
+
+ALTER TABLE usuario ADD activar_super_runline int not null default 0;
+ALTER TABLE usuario ADD tope_por_derecho double not null default 0;
+ALTER TABLE usuario ADD activar_bono int not null default 0;
+
+ALTER TABLE jugada ADD items_jugada int not null default 0;
+ALTER TABLE jugada ADD bono int not null default 0;
+
+ALTER TABLE deporte ADD runline_logro_inicio0 int not null default 0;
+ALTER TABLE deporte ADD runline_logro_inicio1 int not null default 0;
+
+ALTER TABLE deporte ADD altabaja_logro_inicio0 int not null default 0;
+ALTER TABLE deporte ADD altabaja_logro_inicio1 int not null default 0;
+
+INSERT INTO parametros VALUES('JUEGOS_BLOQUEADOS','');
+
+ALTER TABLE logros ADD constraint logros_uq UNIQUE (favorito);
+
+ALTER TABLE logros ADD FRL0 double not null default 0;
+ALTER TABLE logros ADD LRL0 int not null default 0;
+ALTER TABLE logros ADD FRL1 double not null default 0;
+ALTER TABLE logros ADD LRL1 int not null default 0;
+ALTER TABLE logros ADD FSRL0 double not null default 0;
+ALTER TABLE logros ADD LSRL0 int not null default 0;
+ALTER TABLE logros ADD FSRL1 double not null default 0;
+ALTER TABLE logros ADD LSRL1 int not null default 0;
+ALTER TABLE logros ADD FAB0 double not null default 0;
+ALTER TABLE logros ADD LAB0 int not null default 0;
+ALTER TABLE logros ADD FAB1 double not null default 0;
+ALTER TABLE logros ADD LAB1 int not null default 0;
+
+// 02/12/2010
+
+ALTER TABLE usuario ADD apuesta_equipo int not null default 0;
+
+ALTER TABLE usuario ADD comision_venta_parley double not null default 0;
+ALTER TABLE usuario ADD otros_gastos_parley double not null default 0;
+
+// 03/09/2011
+
+insert into deporte values(18,'Beisbol Anota Primero',0,1,3000,0,'',0,0,0,0,0);      
+
+CREATE TABLE deporte_user (
+       id_deporte INT NOT NULL
+     , id_usuario INT NOT NULL
+     , combinacion_user VARCHAR(700) default ''
+     , UNIQUE UQ_deporte_user_1 (id_deporte, id_usuario)
+     , PRIMARY KEY (id_deporte, id_usuario)
+);
+
+ALTER TABLE deporte_user
+  ADD CONSTRAINT FK_deporte_user_1
+      FOREIGN KEY (id_deporte)
+      REFERENCES deporte (id_deporte);
+
+ALTER TABLE deporte_user
+  ADD CONSTRAINT FK_deporte_user_2
+      FOREIGN KEY (id_usuario)
+      REFERENCES usuario (id_usuario);
+
+CREATE TABLE mensaje_user (
+       id_mensaje INT NOT NULL AUTO_INCREMENT
+     , fecha_sis DATETIME NOT NULL
+     , id_usuario INT NOT NULL
+     , id_user_to INT NOT NULL
+     , fecha_view DATETIME
+     , mensaje VARCHAR(500) NOT NULL
+     , PRIMARY KEY (id_mensaje)
+);
+
+ALTER TABLE mensaje_user
+  ADD CONSTRAINT FK_mensaje_user_1
+      FOREIGN KEY (id_usuario)
+      REFERENCES usuario (id_usuario);
+      
+CREATE TABLE vista (
+  idVista int(11) NOT NULL AUTO_INCREMENT,
+  title varchar(200) NOT NULL DEFAULT '',
+  content text NOT NULL,
+  image varchar(200) NOT NULL DEFAULT '',
+  status char(1) NOT NULL DEFAULT '0',
+  tipo char(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (idVista)
+) TYPE=InnoDB;
+
+INSERT INTO parametros VALUES('SEGUNDOS_VISTAS','6');      
+
+ALTER TABLE logros ADD LAP0 int not null default 0;
+ALTER TABLE logros ADD LAP1 int not null default 0;
+
+// 22/12/2011
+
+insert into deporte values(20,'Basquet mitad',0,1,3000,0,'',0,0,0,0,0);
+
+// 04/02/2012
+
+INSERT INTO parametros VALUES('PIE_PAGINA_LOGRO','La hoja de logros es referencial, esta sujeta a cambios sin previo aviso');      
+
+// 01/03/2012
+
+ALTER TABLE logros ADD id_deporte int(11) not null default 0;
+
+ALTER TABLE logros
+  ADD CONSTRAINT logros_id_deporte
+      FOREIGN KEY (id_deporte)
+      REFERENCES deporte (id_deporte);
+
+update logros set id_deporte = 4;
+
+// 12/03/2012
+
+ALTER TABLE logros DROP index logros_uq;
+ALTER TABLE logros ADD constraint logros_uq UNIQUE (id_deporte,favorito);
+
+ALTER TABLE logros DROP PRIMARY KEY;
+ALTER TABLE logros ADD PRIMARY KEY (id_deporte,favorito, hembra);
+
+// 27/05/2012
+CREATE TABLE combinacion (
+  id_jugada int(11) NOT NULL,
+  combinacion varchar(500) NOT NULL,
+  id_usuario int(11) NOT NULL,
+  monto_apuesta double not null,
+  PRIMARY KEY(id_jugada)
+);
+
+CREATE INDEX combinacion_1 ON combinacion(combinacion,id_usuario);
+
+ALTER TABLE usuario ADD tope_por_combinacion double not null default 0;
+ALTER TABLE usuario ADD eliminar_jugada INT not null default 0;
+update usuario set id_supervisor=2 where id_rol=4;
+
+// 19/06/2012
+
+insert into deporte values(21,'Soccer mitad',0,1,1000,0,'',0,0,0,0,0);
+
+// 26/07/2012
+
+INSERT INTO parametros VALUES('DIFERENCIA_HORARIO','3:30');
+
+//21/08/2012
+
+update equipo set desc_corta='Empate' where id_equipo=1;
+
+// 09/10/2012
+
+ALTER TABLE usuario ADD pago_veces VARCHAR(500) not null default '';
+
+
+// 10/12/2012
+
+update usuario set centro_hipico=''  where id_rol=2 or id_rol=1;
+
+
+// 17/12/2012
+
+ALTER TABLE usuario ADD dominio VARCHAR(3) not null default '000';
+
+// 07/01/2012
+
+INSERT INTO parametros VALUES('AVISO_HOME_001','Bienvenido a apuesas222.com');
+INSERT INTO parametros VALUES('AVISO_HOME_002','Bienvenido a apuesacaliente.com');
+INSERT INTO parametros VALUES('AVISO_HOME_003','Bienvenido a betsports04.com');
+
+// 15/01/2013
+
+ALTER TABLE usuario ADD pago_clave INT NOT NULL DEFAULT 0;
+
+// 28/01/2013
+
+ALTER TABLE juego ADD dominio_actual VARCHAR(3) not null default '000';
+ALTER TABLE juego ADD dominio_anterior VARCHAR(3) not null default '000';
+ALTER TABLE usuario ADD abrir_juego INT not null default 0;
+
+// 15/02/2013
+**** HACER RESPALDO ANTES DE EJECUTAR ESTAS INSTRUCCIONES **** 
+
+ALTER TABLE usuario_juego_equipo ADD COLUMN desactivado INT NOT NULL DEFAULT 0;
+
+CREATE INDEX usuario_juego_equipo_5 ON usuario_juego_equipo(id_juego_equipo,id_usuario,desactivado);
+
+UPDATE usuario_juego_equipo 
+INNER JOIN (select x.id_juego_equipo,x.id_usuario,max(x.fecha_sis) As fecha from usuario_juego_equipo x group by  x.id_juego_equipo,x.id_usuario) As cta 
+USING(id_juego_equipo,id_usuario) SET desactivado=if(usuario_juego_equipo.fecha_sis=cta.fecha,0,1) 
+
+delete cuenta_jugador from cuenta_jugador INNER JOIN usuario AS usu on cuenta_jugador.id_jugador=usu.id_usuario where usu.id_rol!=4
+
+// 28/02/2013
+
+ALTER TABLE juego ADD id_usuario_totaliza INT NOT NULL DEFAULT 1;
+
+// 05/05/2013
+
+ALTER TABLE jugada ADD INDEX jugada_fecha_sis1 (fecha_sis);
+ALTER TABLE usuario_admin ADD INDEX usuario_admin_id_admin (id_admin);
+
+create index jugada_5 on jugada(id_usuario,id_status_jugada,fecha_exp);
+create index cuenta_jugador_ope_ref_tip on cuenta_jugador(operacion,referencia,tipo);
+
+CREATE INDEX jugada_usu_fec_sta ON jugada(id_usuario,fecha_sis,id_status_jugada);
+
+// 13/07/2013
+
+ALTER TABLE usuario ADD vencido_reporte int not null default 1;
+
+

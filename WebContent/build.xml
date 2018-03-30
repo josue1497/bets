@@ -1,0 +1,41 @@
+<project>
+
+<property name="tomcat_home" location="/opt/Tomcat5"/>
+ 
+	<delete>
+    <fileset dir="." includes="**/*.class"/>
+    </delete>
+
+	
+	<copy todir="WEB-INF/classes">
+	  <fileset dir="WEB-INF/src">
+	    <exclude name="**/*.java"/>
+	  </fileset>
+	</copy>
+
+
+<javac srcdir="WEB-INF/src"
+         destdir="WEB-INF/classes"
+         fork="yes"
+		 encoding="iso-8859-1">
+		 
+		 
+  
+	 
+	  <classpath>
+		  <pathelement path="${classpath}"/>
+				<fileset dir="WEB-INF/lib">
+					<include name="**/*.jar"/>
+				</fileset>
+		
+				   <pathelement location="${tomcat_home}/common/lib/servlet-api.jar"/>
+		   <pathelement location="${tomcat_home}/common/lib/dfc.jar"/>
+		   <pathelement location="${tomcat_home}/common/lib/dfcbase.jar"/>
+		   <pathelement location="${tomcat_home}/common/lib/servlet-api.jar"/>
+		   <pathelement location="${tomcat_home}/common/lib/ojdbc14.jar"/>
+
+		</classpath>
+		
+	</javac>
+	
+</project>

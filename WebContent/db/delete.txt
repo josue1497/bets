@@ -1,0 +1,28 @@
+-- borrar los insert
+SET FOREIGN_KEY_CHECKS=0; 
+delete from apuesta_juego_equipo;
+delete from usuario_juego_equipo;
+delete from juego_equipo_lanzador;
+delete from juego_equipo;
+delete from juego;
+delete from campeonato;
+delete from equipo_liga;
+delete from liga;
+delete from deporte;
+delete from apuesta;
+delete from status_apuesta;
+delete from status_deporte;
+delete from status_juego;
+delete from cuenta_jugador;
+delete from usuario;
+delete from perfil_opcion;
+delete from opcion;
+delete from status;
+delete from lanzador;
+delete from equipo;
+delete from tipo_cuenta;
+delete from perfil;
+delete from logros;
+delete from parametros;
+delete from reglas_pago;
+SET FOREIGN_KEY_CHECKS=1; 

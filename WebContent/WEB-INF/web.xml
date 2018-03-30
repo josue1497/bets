@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+
+	<listener>
+		<listener-class>com.betcesc.game.Contador</listener-class>
+	</listener>
+
+	<filter>
+		<filter-name>SecurityFilter</filter-name>
+		<filter-class>com.betcesc.game.common.SecurityFilter</filter-class>
+	</filter>
+
+
+
+	<!-- Standard Action Servlet Configuration (with debugging) -->
+
+	<!-- como definir un parametro para utilizarlo en la aplicación -->
+	<!-- <context-param> <param-name> pathbasededatos </param-name> <param-value> 
+		/var/www/desarrollos/mldesarrollo/build/uploaded_files/ </param-value> <description> 
+		parametro path para la clase BaseDeDatos </description> </context-param> -->
+	<context-param>
+		<param-name>puerto_seguro</param-name>
+		<param-value>8443</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>maxlogintries</param-name>
+		<param-value>5</param-value>
+	</context-param>
+	<context-param>
+		<param-name>maxinactiveinterval</param-name>
+		<param-value>10800</param-value>
+	</context-param>
+
+	<servlet>
+		<servlet-name>action</servlet-name>
+		<servlet-class>org.apache.struts.action.ActionServlet</servlet-class>
+		<init-param>
+			<param-name>config</param-name>
+			<param-value>
+				/WEB-INF/struts-config.xml
+			</param-value>
+		</init-param>
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>2</param-value>
+		</init-param>
+		<init-param>
+			<param-name>detail</param-name>
+			<param-value>2</param-value>
+		</init-param>
+		<init-param>
+			<param-name>validate</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	<servlet>
+		<description>
+		</description>
+		<display-name>imgServlet</display-name>
+		<servlet-name>imgServlet</servlet-name>
+		<servlet-class>com.betcesc.game.servlet.imgServlet</servlet-class>
+	</servlet>
+
+	<!-- Standard Action Servlet Mapping -->
+	<filter-mapping>
+		<filter-name>SecurityFilter</filter-name>
+		<servlet-name>action</servlet-name>
+	</filter-mapping>
+
+	<servlet-mapping>
+		<servlet-name>action</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>ImagesServlet</servlet-name>
+		<servlet-class>com.betcesc.game.servlet.ImagesServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ImagesServlet</servlet-name>
+		<url-pattern>/dbimg/*</url-pattern>
+	</servlet-mapping>
+
+
+	<session-config>
+		<session-timeout>60</session-timeout>
+	</session-config>
+
+	<!-- Gecko browsers require CSS stylesheets served as text/css. By default 
+		Tomcat 3.3 serves them as text/css. Tomcat 4 and later are OK. See http://devedge.netscape.com/viewsource/2002/incorrect-mime-types/ -->
+	<mime-mapping>
+		<extension>css</extension>
+		<mime-type>text/css</mime-type>
+	</mime-mapping>
+
+	<!-- The Usual Welcome File List -->
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
+	<!-- SecurityFilter works with custom error pages -->
+	<error-page>
+		<!-- Status code (404) indicating that the requested resource is not available. -->
+		<error-code>404</error-code>
+		<location>/common/error/error404.html</location>
+	</error-page>
+	<error-page>
+		<!-- Status code (403) indicating the server understood the request but 
+			refused to fulfill it. -->
+		<error-code>403</error-code>
+		<location>/common/error/error403.html</location>
+	</error-page>
+	<!-- Status code (401) indicating that the request requires HTTP authentication. -->
+	<error-page>
+		<error-code>401</error-code>
+		<location>/common/error/error401.html</location>
+	</error-page>
+	<error-page>
+		<!-- Status code (500) indicating an error inside the HTTP server which 
+			prevented it from fulfilling the request. -->
+		<error-code>500</error-code>
+		<location>/common/error/error500.html</location>
+	</error-page>
+
+
+	<!-- Struts Library Descriptors -->
+	<jsp-config>
+		<taglib>
+			<taglib-uri>/WEB-INF/tlds/struts-bean.tld</taglib-uri>
+			<taglib-location>/WEB-INF/tlds/struts-bean.tld</taglib-location>
+
+		</taglib>
+		<taglib>
+			<taglib-uri>/WEB-INF/tlds/struts-html.tld</taglib-uri>
+			<taglib-location>/WEB-INF/tlds/struts-html.tld</taglib-location>
+		</taglib>
+		<taglib>
+			<taglib-uri>/WEB-INF/tlds/struts-logic.tld</taglib-uri>
+			<taglib-location>/WEB-INF/tlds/struts-logic.tld</taglib-location>
+		</taglib>
+		<taglib>
+			<taglib-uri>/WEB-INF/tlds/struts-template.tld</taglib-uri>
+			<taglib-location>/WEB-INF/tlds/struts-template.tld</taglib-location>
+		</taglib>
+		<taglib>
+			<taglib-uri>/WEB-INF/tlds/struts-nested.tld</taglib-uri>
+			<taglib-location>/WEB-INF/tlds/struts-nested.tld</taglib-location>
+		</taglib>
+		<taglib>
+			<taglib-uri>/WEB-INF/tlds/struts-tiles.tld</taglib-uri>
+			<taglib-location>/WEB-INF/tlds/struts-tiles.tld</taglib-location>
+		</taglib>
+		<taglib>
+			<taglib-uri>/WEB-INF/tlds/pagina.tld</taglib-uri>
+			<taglib-location>/WEB-INF/tlds/pagina.tld</taglib-location>
+		</taglib>
+	</jsp-config>
+
+
+</web-app>
