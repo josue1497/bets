@@ -45,7 +45,7 @@ public class Conexion {
 //			cargarInfoBd();
 	//		Class.forName(E);
 			connection = ds.getConnection();
-			//connection.createStatement().execute("SET SESSION time_zone = '"+Constants.TIME_ZONE+ "'");
+			connection.createStatement().execute("SET SESSION time_zone = '"+Constants.TIME_ZONE+"'");
 			// connection = DriverManager.getConnection(D, B, C);
 		} catch (SQLException sqlexception) {
 			sqlexception.printStackTrace();

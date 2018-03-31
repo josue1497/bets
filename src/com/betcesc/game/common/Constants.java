@@ -159,6 +159,8 @@ public class Constants {
 	public static final String ID_EQUIPO_BEISBOL_5 = "7";
 	public static final String ID_EQUIPO_BEISBOL_1 = "8";
 	public static final String ID_EQUIPO_BEISBOL_0 = "18";
+	
+	public static final String ID_DEPORTE_ANIMALITOS= "26";
 
 	public static final String GANADOR_NO = "0";
 	public static final String GANADOR_SI = "1";

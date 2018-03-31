@@ -1,25 +1,26 @@
 <Context>
-  
-  
-		<Resource auth="Container"
-			description="DataSource Usado por el Core de Servicios de MDO"
-			driverClassName="com.mysql.jdbc.Driver" 
-			initialSize="1" 
-			maxActive="100"
-			minIdle="1" 
-			maxIdle="5" 
-			minEvictableIdleTimeMillis="60000" 
-			name="jdbc/game"
-			removeAbandoned="true" 
-			removeAbandonedTimeout="120"
-			timeBetweenEvictionRunsMillis="60000" 
-			 factory="org.apache.commons.dbcp.BasicDataSourceFactory"
-			type="javax.sql.DataSource" 
-			url="jdbc:mysql://localhost:3306/betcesc?serverTimezone=America/La_Paz"
+	<Resource auth="Container"
+		description="DataSource Usado por el Core de Servicios de MDO"
+		driverClassName="com.mysql.jdbc.Driver" 
+		initialSize="1" 
+		maxActive="100"
+		minIdle="1" 
+		maxIdle="5" 
+		minEvictableIdleTimeMillis="60000" 
+		name="jdbc/game"
+		removeAbandoned="true" 
+		removeAbandonedTimeout="120"
+		timeBetweenEvictionRunsMillis="60000"
+		factory="org.apache.commons.dbcp.BasicDataSourceFactory" 
+		type="javax.sql.DataSource"
+		url="jdbc:mysql://localhost:3306/betcesc?serverTimezone=America/La_Paz"
+		username="root" password="root" />
+<!--HIST 
+
+
+url="jdbc:mysql://localhost:3306/betcesc?serverTimezone=America/La_Paz"
 			username="root"
 			password="root"
-			 />
-<!--HIST 
 
 url="jdbc:mysql://betcesc.cm9jbas4r7vn.us-west-2.rds.amazonaws.com:35000/betcesc?serverTimezone=America/La_Paz"
 			username="betcesc"

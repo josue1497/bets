@@ -541,6 +541,8 @@ public class JuegoDAO {
 			if (!isTotal) {
 				strBuffquery.append("ORDER BY a.id_liga,c.referencia,a.fecha_ini ");
 			}
+			
+			log.info(strBuffquery.toString());
 
 			oCachedRowSet = oEjecutorSql.ejecutaQuery(strBuffquery.toString(), oParametros);
 			
@@ -548,6 +550,8 @@ public class JuegoDAO {
 		} catch (Exception e) {
 			log.info("Error en la ejecucion de JuegoDAO.listaJuegoAbiertoDAO");
 			log.error("Error:" + e.getMessage());
+			e.printStackTrace();
+			System.err.println(e.getMessage());
 			throw e;
 		}
 		return oCachedRowSet;
