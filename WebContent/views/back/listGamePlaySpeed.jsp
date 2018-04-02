@@ -49,15 +49,15 @@ function setPuertoTicket(){
 }
 
 function send(forma) {
-	<%if(usuario.getIdRol().equals(Constants.ROL_JUGADOR_DE_TAQUILLA)){%>
-	if(typeof(getCookie("puertoTicket"))=='undefined') {
-		setPuertoTicket();
-		if(typeof(getCookie("puertoTicket"))=='undefined') {
-			alert("El puerto no fue grabado, habilite las cookies para este si");
-			return;
-		}
-	}
-	<%}%>
+<%-- 	<%if(usuario.getIdRol().equals(Constants.ROL_JUGADOR_DE_TAQUILLA)){%> --%>
+// 	if(typeof(getCookie("puertoTicket"))=='undefined') {
+// 		setPuertoTicket();
+// 		if(typeof(getCookie("puertoTicket"))=='undefined') {
+// 			alert("El puerto no fue grabado, habilite las cookies para este si");
+// 			return;
+// 		}
+// 	}
+<%-- 	<%}%> --%>
 	if(isEmptyInt(document.forms[0].montoApostar,"El Monto Apostar",2,50)){return false;}
 	if(logrosCalc.length<=0) {
 		alert("No hay jugadas");

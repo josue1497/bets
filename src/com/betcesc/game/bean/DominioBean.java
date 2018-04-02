@@ -24,8 +24,8 @@ public class DominioBean
 
 	public DominioBean(String ip, String dominio, long time)
 	    {
-		if (dominio.equals("localhost"))
-
+		if (dominio.equals("localhost") || dominio.equals("192.168.1.103")
+				|| dominio.equals("190.205.231.197"))
 		    dominio = "www.betcesc.com";
 		
 		if (dominio.startsWith("prueba"))

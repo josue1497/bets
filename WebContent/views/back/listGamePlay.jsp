@@ -396,7 +396,6 @@ function isValido(jug,j,n,nombre,ref,deporte) {
 
 	if(refTeaser || ref.charAt(0)=='T' && logrosCalc.length==0) {
 		if(ref.charAt(0)!='T') {
-			//alert("paso 3");
 			return -1;
 		}
 		var refA = ref.substring(0,ref.length-2);
@@ -409,7 +408,6 @@ function isValido(jug,j,n,nombre,ref,deporte) {
 		for(var x=0;x<logrosCalc.length;x++){
 			//alert(logrosCalc[x].referencia.substring(0,logrosCalc[k].referencia.length-1));
 			if(refNO==logrosCalc[x].referencia){
-// 				alert("paso 1");
 				return -1;
 			}
 		}
@@ -418,13 +416,11 @@ function isValido(jug,j,n,nombre,ref,deporte) {
 		return 0;
 	} else {
 		if(ref.charAt(0)=='T') {
-// 			alert("paso 2");
 			return -1;
 		}
 	}
 
 	if(error[deporte].length==0) {
-// 		alert("paso 4");
 		return -1;
 	}
 	
@@ -434,13 +430,11 @@ function isValido(jug,j,n,nombre,ref,deporte) {
 	for(var p=0; p < jug.length; p++) {
 		//alert(parseInt(jug[p].padre)+"  "+parseInt(j));
 		if(parseInt(jug[p].padre)===parseInt(j) && deporte!=<%=Constants.ID_DEPORTE_ANIMALITOS%>) {
-// 			alert("paso 5");
 			todos += sep + jug[p].numero;
 			con++;
 		}
 	}
 	if(con===0) {
-// 		alert("paso 6");
 		return 0;
 	}
 
@@ -449,7 +443,6 @@ function isValido(jug,j,n,nombre,ref,deporte) {
 	for(var x=0;x<error[deporte].length;x++) {
 		if(error[deporte][x].trim()=='') return -1;
 		if(todos.indexOf(','+error[deporte][x]+',')!=-1) {
-			alert("paso 7");
 			return -1;
 		}
 	}

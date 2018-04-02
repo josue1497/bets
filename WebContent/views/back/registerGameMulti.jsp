@@ -94,6 +94,39 @@ function llenar(pos,lanzador) {
 	}
 }
 
+function llenarAnimalitos(cadena){
+//	var obj = document.getElementById(id);
+
+	var datos = cadena;
+
+	var data = eval(datos);
+	if(datos!="") {
+		
+		for (var k = 0; k < data.length; k++) {
+			
+			var select = document.getElementById("idEquipo"+k);
+			
+			while(select.hasChildNodes()) {
+				select.removeChild(select.childNodes[0]);
+			}
+		   	   		    
+		    var option = document.createElement("option");
+		    option.setAttribute("value", data[k+1].value);
+		    var text = document.createTextNode(data[k+1].text);
+		    option.appendChild(text);
+		    
+		    select.appendChild(option);
+		    
+		    document.getElementById("linea"+k).style.display='';
+		    with(document.forms[0]) {
+				_MoneyLine[k].value='1';
+			}
+		    
+			
+		}
+	}
+}
+
 
 function responseText(texto) {
 	if (accion=="llenar") {
@@ -107,9 +140,18 @@ function responseText(texto) {
 			http.start();
 	   	} else if(opcion=="2") {
 	   		cadena = (texto!="[]"?"[{value:'',text:'Seleccione el equipo...'},"+texto.substring(1):"[{value:'',text:'Seleccione una liga...'}]");
+	   		if(document.getElementById("idDeporte").value=="26"){	   			
+	   			llenarAnimalitos(cadena);
+	   		}else{
+	   			
+	   		cadena = (texto!="[]"?"[{value:'',text:'Seleccione el equipo...'},"+texto.substring(1):"[{value:'',text:'Seleccione una liga...'}]");
+	   		
 	   		for(j=0;j<document.forms[0]._IdEquipo.length;j++) {
 		   		llenarCombo("idEquipo"+j,cadena);
-		   	}
+		   		ocultarLinea();
+		   		
+	   		}
+	   		}
 	   	} else if(opcion=="3") {
 		   	texto = (texto!="[]"?"[{value:'',text:'Seleccione el lanzador...'},"+texto.substring(1):"[{value:'',text:'Seleccione un equipo...'}]");
 	   		llenarCombo("idLanzador"+opcionLanzador,texto);

@@ -40,7 +40,7 @@ function listado(n) {
 }
 </script>
 <form action="">
-<table align="center" width="60%" cellpadding="5" cellspacing="5" class="detalleTablaLeft" class="none" style="background-image:url(images/fondoReporte.jspg);background-repeat:no-repeat;">
+<table align="center" width="60%" cellpadding="5" cellspacing="5" class="detalleTablaLeft" class="none" style="background-image:url(images/fondoReporte.jsp);background-repeat:no-repeat;">
 	<tr>
 		<td>
 <table align="center" width="70%" cellpadding="15" cellspacing="5" class="tablaCaption"  border="1" >

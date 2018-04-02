@@ -96,6 +96,28 @@ function llenarCombo(id,datos){
 	}
 }
 
+function ocultarLinea(){
+	
+	for(var i = 1; i<=100;i++){
+		 document.getElementById("linea"+i).style.display='none';
+		 with(document.forms[0]) {
+			 			
+			 while(_IdEquipo[i].hasChildNodes()) {
+				 _IdEquipo[i].removeChild(_IdEquipo[i].childNodes[0]);
+				}
+						_IdEquipo[i].value='';
+						_MoneyLine[i].value=0;
+						_IdEquipo[i].remove(0);
+			}
+	}
+	
+}
+
+function vaciarCombos(items) {
+	for(var i = 0; i>=items.length; i++){
+		items.remove(i);
+	}
+}
 
 function xmlTag(nombre,valor) {
 	return ("<"+nombre+">"+valor+"<\/"+nombre+">\n");
