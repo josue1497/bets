@@ -79,6 +79,7 @@ function abrir() {
 	send();
 }
 
+
 function llenar(pos,lanzador) {
 	accion="llenar";
 	opcion = pos;
@@ -95,14 +96,17 @@ function llenar(pos,lanzador) {
 }
 
 function llenarAnimalitos(cadena){
-//	var obj = document.getElementById(id);
-
 	var datos = cadena;
 
 	var data = eval(datos);
+	data.splice(0,1);
+	data.sort();
+	
+	var ordenados= ordenarAnimalitos(data);
+	
 	if(datos!="") {
 		
-		for (var k = 0; k < data.length; k++) {
+		for (var k = 0; k < ordenados.length; k++) {
 			
 			var select = document.getElementById("idEquipo"+k);
 			
@@ -111,8 +115,8 @@ function llenarAnimalitos(cadena){
 			}
 		   	   		    
 		    var option = document.createElement("option");
-		    option.setAttribute("value", data[k+1].value);
-		    var text = document.createTextNode(data[k+1].text);
+		    option.setAttribute("value", ordenados[k].value);
+		    var text = document.createTextNode(ordenados[k].text);
 		    option.appendChild(text);
 		    
 		    select.appendChild(option);
@@ -125,6 +129,139 @@ function llenarAnimalitos(cadena){
 			
 		}
 	}
+}
+
+function ordenarAnimalitos(cadena){
+	
+	var data = new Array(cadena.length);
+			
+	for (var k = 0; k < cadena.length; k++) {
+		switch(cadena[k].text){
+	case "0 DELFIN 0":
+		data[0]=cadena[k];
+		break;
+	case "00 TUCAN 00":
+		data[1]=cadena[k];
+		break;
+	case "1 CARNERO 1":
+		data[2]=cadena[k];
+		break;
+	case "2 TORO 2":
+		data[3]=cadena[k];
+		break;
+	case "3 CIEMPIES 3":
+		data[4]=cadena[k];
+		break;
+	case "4 ALACRAN 4":
+		data[5]=cadena[k];
+		break;
+	case "5 LEON 5":
+		data[6]=cadena[k];
+		break;
+	case "6 RANA 6":
+		data[7]=cadena[k];
+		break;
+	case "7 PERICO 7":
+		data[8]=cadena[k];
+		break;
+	case "8 RATON 8":
+		data[9]=cadena[k];
+		break;
+	case "9 AGUILA 9":
+		data[10]=cadena[k];
+		break;
+	case "10 TIGRE 10":
+		data[11]=cadena[k];
+		break;
+	case "11 GATO 11":
+		data[12]=cadena[k];
+		break;
+	case "12 CABALLO 12":
+		data[13]=cadena[k];
+		break;
+	case "13 MONO 13":
+		data[14]=cadena[k];
+		break;
+	case "14 PALOMA 14":
+		data[15]=cadena[k];
+		break;
+	case "15 ZORRO 15":
+		data[16]=cadena[k];
+		break;
+	case "16 OSO 16":
+		data[17]=cadena[k];
+		break;
+	case "17 PAVO 17":
+		data[18]=cadena[k];
+		break;
+	case "18 BURRO 18":
+		data[19]=cadena[k];
+		break;
+	case "19 CHIVO 19":
+		data[20]=cadena[k];
+		break;
+	case "20 COCHINO 20":
+		data[21]=cadena[k];
+		break;
+	case "21 GALLO 21":
+		data[22]=cadena[k];
+		break;
+	case "22 CAMELLO 22":
+		data[23]=cadena[k];
+		break;
+	case "23 CEBRA 23":
+		data[24]=cadena[k];
+		break;
+	case "24 IGUANA 23":
+		data[25]=cadena[k];
+		break;
+	case "24 IGUANA 24":
+		data[26]=cadena[k];
+		break;
+	case "25 GALLINA 25":
+		data[27]=cadena[k];
+		break;
+	case "26 VACA 26":
+		data[28]=cadena[k];
+		break;
+	case "27 PERRO 27":
+		data[29]=cadena[k];
+		break;
+	case "28 ZAMURO 28":
+		data[30]=cadena[k];
+		break;
+	case "29 ELEFANTE 29":
+		data[31]=cadena[k];
+		break;
+	case "30 CAIMAN 30":
+		data[32]=cadena[k];
+		break;
+	case "31 MURCIELAGO 31":
+		data[33]=cadena[k];
+		break;
+	case "32 ARDILLA 32":
+		data[34]=cadena[k];
+		break;
+	case "33 PESCADO 33":
+		data[35]=cadena[k];
+		break;
+	case "34 VENADO 34":
+		data[36]=cadena[k];
+		break;
+	case "35 JIRAFA 35":
+		data[37]=cadena[k];
+		break;
+	case "36 CULEBRA 36":
+		data[38]=cadena[k];
+		break;
+		}
+		
+				
+	}
+	
+	return data;
+	
+	
 }
 
 
@@ -597,8 +734,8 @@ function onLoad() {
 	}
 	
 }
-</logic:present>	
 </script>
+</logic:present>	
 <logic:present name="forma" scope="session">
 <script language="javascript">
 	// ahora buscamos la ultima referencia
