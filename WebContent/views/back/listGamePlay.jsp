@@ -170,8 +170,9 @@ function send(forma) {
 		setPuertoTicket();
 		if(typeof(getCookie("puertoTicket"))=='undefined') {
 			alert("El puerto no fue grabado, habilite las cookies en el navegador");
-			return false;
+			return true;
 		}
+		return true;
 	}
 	<%}%>
 
@@ -664,7 +665,7 @@ function changeCellOut(el) {
 <%if(session.getAttribute("bloqueoPantalla")!=null){%>	
 <meta http-equiv="refresh" content="2500;url=<%=basePath%>listGamePlay.do">
 <%}%>
-<form name="frmListGamePlay" action="/game/listGamePlay.do" method="POST" style="margin:0px" onSubmit='return false;'>
+<form name="frmListGamePlay" action="/game/listGamePlay.do" method="POST" style="margin:0px" onSubmit='return true;'>
 <input type="hidden" name="idDeporte" value=""/>
 <input type="hidden" name="agregar" value="false"/>
 <input type="hidden" name="teaser" value="false"/>

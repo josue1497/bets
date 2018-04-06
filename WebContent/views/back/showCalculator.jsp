@@ -89,7 +89,7 @@ if(session.getAttribute("sendErrores")!=null) {
 					if(logro[y].value>0) {
 						apuesta = apuesta+(apuesta*(logro[y].value/100));
 					} else if(logro[y].value<0) {
-						apuesta = apuesta+(apuesta/((logro[y].value*-1)/100));
+						apuesta = apuesta+(apuesta*((logro[y].value*-1)/100));
 					}
 					montoPremio.value = Math.round(apuesta);
 				}
@@ -152,6 +152,7 @@ if(session.getAttribute("sendErrores")!=null) {
 		var valido = window.parent.send(document.forms[0]);
 		if(valido) {
 			document.forms[0].isFree.value=(window.parent.isFree()?1:0);
+			document.forms[0].agregar.value="true";
 			window.parent.desmarcar();
 			document.forms[0].submit();
 		} else {

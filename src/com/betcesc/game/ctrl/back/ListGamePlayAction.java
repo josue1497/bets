@@ -274,7 +274,7 @@ public class ListGamePlayAction extends Action {
 									jug.add(calc);
 									continue;
 								}
-								if (con >= 2) {
+								if (!"26".equals(String.valueOf(deporte)) && con >= 2) {
 									throw new PlayNotValidException("La combinacion de la apuesta no es valida.");
 								}
 								cad = antN.concat("-").concat(calc.getNumero());
@@ -285,10 +285,10 @@ public class ListGamePlayAction extends Action {
 								}
 
 								for (int x = 0; x < error[deporte].length; x++) {
-									if (error[deporte][x].trim().equals("")) {
+									if (!"26".equals(String.valueOf(deporte)) && error[deporte][x].trim().equals("")) {
 										throw new PlayNotValidException("La combinacion de la apuesta no es valida.");
 									}
-									if (error[deporte][x].equals(cad) || error[deporte][x].equals(cad2)) {
+									if (!"26".equals(String.valueOf(deporte)) && error[deporte][x].equals(cad) || error[deporte][x].equals(cad2)) {
 										throw new PlayNotValidException("La combinacion de la apuesta no es valida.");
 									}
 								}
