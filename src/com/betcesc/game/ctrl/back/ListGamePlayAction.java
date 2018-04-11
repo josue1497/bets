@@ -185,11 +185,11 @@ public class ListGamePlayAction extends Action {
 					/* grabamos la apuesta */
 					double montoPorDerecho = 0;
 					double topePorDerecho = 0;
-
+					int deporte = Integer.parseInt(calc.getDeporte());
 					try {
 						// validamos el premio de la apuesta
 						montoPremioTicket = Double.parseDouble(request.getParameter("montoPremio"));
-						if (montoPremioTicket != montoPremio) {
+						if (montoPremioTicket != montoPremio && 26!=deporte) {
 							throw new MountPayInvalidException("El monto del premio no corresponde con el monto de la apuesta");
 						}
 
@@ -205,7 +205,7 @@ public class ListGamePlayAction extends Action {
 							String cad = null;
 							String cad2 = null;
 							int con = 0;
-							int deporte = 0;
+							//deporte = 0;
 
 							int size = listaJugada.size();
 

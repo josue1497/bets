@@ -87,6 +87,11 @@ if(session.getAttribute("sendErrores")!=null) {
 			for(var y=0; y<logrosCalc.length; y++) {
 				if(cuenta) {
 					if(logro[y].value>0) {
+						if(logrosCalc[y].deporte=="26"){
+							var animalito = "true";
+							continue;
+						}
+						else	
 						apuesta = apuesta+(apuesta*(logro[y].value/100));
 					} else if(logro[y].value<0) {
 						apuesta = apuesta+(apuesta*((logro[y].value*-1)/100));
@@ -94,6 +99,11 @@ if(session.getAttribute("sendErrores")!=null) {
 					montoPremio.value = Math.round(apuesta);
 				}
 			}
+			if(animalito){
+				apuesta=(apuesta*(logro[0].value/10));
+				montoPremio.value = Math.round(apuesta);
+			}
+			montoApostar.value = montoApostar.value*logrosCalc.length;
 			
 			// aplicamos las reglas
 			montoApuesta=parseInt(montoApostar.value);

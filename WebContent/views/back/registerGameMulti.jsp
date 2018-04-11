@@ -123,7 +123,7 @@ function llenarAnimalitos(cadena){
 		    
 		    document.getElementById("linea"+k).style.display='';
 		    with(document.forms[0]) {
-				_MoneyLine[k].value='1';
+				_MoneyLine[k].value='300';
 			}
 		    
 			

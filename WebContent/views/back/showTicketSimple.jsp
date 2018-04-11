@@ -17,6 +17,7 @@ String pagado = "";
 String status = "";
 String diaJugada = "";
 String diaActual = "";
+String horaJuego = "";
 
 
 %>
@@ -53,6 +54,7 @@ String diaActual = "";
 	premio = ticket.getString("premio");
 	pagado = ticket.getString("pagado");
 	status = ticket.getString("status_jugada");
+	//horaJuego =ticket.getString("");
 	diaJugada = ticket.getString("dia");
 	diaActual = ticket.getString("dia_actual");
 	eliminada = ticket.getString("id_status_jugada").equals(Constants.STATUS_JUGADA_ELIMINADA);

@@ -372,6 +372,12 @@ function isValido(jug,j,n,nombre,ref,deporte) {
 
 	//alert(jug+' '+j+' '+n+' '+nombre+' '+ref+' '+deporte);
 	// validamos por id de juego
+	if(document.getElementsByName("JuegoSeleccionado").value==undefined)
+		document.getElementsByName("JuegoSeleccionado").value='false';
+	
+	if(document.getElementsByName("AnimalitoSeleccionado").value==undefined)
+		document.getElementsByName("AnimalitoSeleccionado").value='false';
+	
 	var bloqueados = ',<%=request.getAttribute("JUEGOS_BLOQUEADOS")%>,';
 	for(var p=0; p < jug.length; p++) {
 		var r1 = ","+j+"-"+jug[p].juego+",";
@@ -425,6 +431,23 @@ function isValido(jug,j,n,nombre,ref,deporte) {
 		return -1;
 	}
 	
+	if(deporte==<%=Constants.ID_DEPORTE_ANIMALITOS%> && 
+			document.getElementsByName("JuegoSeleccionado").value=='false'){
+		document.getElementsByName("AnimalitoSeleccionado").value='true';
+	}else if(deporte!=<%=Constants.ID_DEPORTE_ANIMALITOS%> && 
+			document.getElementsByName("AnimalitoSeleccionado").value=='false'){
+		document.getElementsByName("JuegoSeleccionado").value='true';
+	}
+	
+	if(deporte!=<%=Constants.ID_DEPORTE_ANIMALITOS%> && 
+			document.getElementsByName("AnimalitoSeleccionado").value=='true' && 
+				document.getElementsByName("JuegoSeleccionado").value=='false')
+		return -2;
+	if(deporte==<%=Constants.ID_DEPORTE_ANIMALITOS%> &&
+			document.getElementsByName("AnimalitoSeleccionado").value=='false' && 
+				document.getElementsByName("JuegoSeleccionado").value=='true')
+		return -2;
+	
 	var con=0;
 	var todos = n;
 	var sep="-";
@@ -433,7 +456,7 @@ function isValido(jug,j,n,nombre,ref,deporte) {
 		if(parseInt(jug[p].padre)===parseInt(j) && deporte!=<%=Constants.ID_DEPORTE_ANIMALITOS%>) {
 			todos += sep + jug[p].numero;
 			con++;
-		}
+			}
 	}
 	if(con===0) {
 		return 0;
@@ -669,6 +692,8 @@ function changeCellOut(el) {
 <input type="hidden" name="idDeporte" value=""/>
 <input type="hidden" name="agregar" value="false"/>
 <input type="hidden" name="teaser" value="false"/>
+<input type="hidden" name="AnimalitoSeleccionado" value="false"/>
+<input type="hidden" name="JuegoSeleccionado" value="false"/>
 <input type="hidden" name="dominioActual" value="<%=usuario.getDominio()%>"/>
 
 <table align="center" width="100%"  cellspacing="0" cellpadding="0" border="0">
