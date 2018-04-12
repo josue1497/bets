@@ -1738,6 +1738,258 @@ public class JuegoFacade {
 		
 		return oJugadaTO;
 	}
+	
+	/**
+	 * Abre el juego para que este disponible para las jugadas
+	 * 
+	 * @return ArrayList, array cuerpo del main.
+	 */
+	public JugadaTO insertarJugadaAnimalitosFacade(ArrayList listaJugadas, UsuarioIF oUsuarioTO) throws GameClosedException, UserWithOutCreditException, GameOpenException, TopePorCombinacionExcedidoException, Exception {
+		log.info("Iniciando ejecucion de JuegoFacade.registrarJugadaFacade");
+		EjecutorSql oEjecutorSql = new EjecutorSql();
+		JugadaTO oJugadaTO = new JugadaTO();
+		CuentaJugadorTO oCuentaJugadorTO = new CuentaJugadorTO();
+		CalculadoraForm oCalculadoraForm = null;
+		JugadaJuegoEquipoTO oJugadaJuegoEquipoTO = new JugadaJuegoEquipoTO();
+		UsuarioJuegoEquipoTO oUsuarioJuegoEquipoTO = new UsuarioJuegoEquipoTO();
+		JuegoTO oJuegoTO = new JuegoTO();
+		CombinacionTO oCombinacionTO = new CombinacionTO();
+
+		JugadaDAO oJugadaDAO = new JugadaDAO(oEjecutorSql);
+		JugadaJuegoEquipoDAO oJugadaJuegoEquipoDAO = new JugadaJuegoEquipoDAO(oEjecutorSql);
+		CuentaJugadorDAO oCuentaJugadorDAO = new CuentaJugadorDAO(oEjecutorSql);
+		UsuarioJuegoEquipoDAO oUsuarioJuegoEquipoDAO = new UsuarioJuegoEquipoDAO(oEjecutorSql);
+		JuegoDAO oJuegoDAO = new JuegoDAO(oEjecutorSql);
+		CombinacionDAO oCombinacionDAO = new CombinacionDAO(oEjecutorSql);
+
+		boolean isError = false;
+		try {
+			Calendar fechaSis = null;
+			Date fechaJuego = null;
+			Date fechaUltimoJuego = null; 
+			
+			if (listaJugadas.size() > 0) {
+				/*
+				 * Pedimos el saldo del jugador y lo comparamos contra la
+				 * jugada
+				 */
+				double saldo = 0;
+				if (oUsuarioTO.getIdRol().equals(Constants.ROL_JUGADOR)) {
+					saldo = UsuarioTO.getSaldo(oUsuarioTO.getIdUsuario());
+				}
+
+				
+				// iniciamos la transaccion
+				oEjecutorSql.getConnection().setAutoCommit(false);
+
+				oCalculadoraForm = (CalculadoraForm) listaJugadas.get(0);
+
+				double montoApostar = Double.parseDouble(oCalculadoraForm.getMontoApostar());
+				if (oUsuarioTO.getIdRol().equals(Constants.ROL_JUGADOR)) {
+					if (montoApostar > saldo) {
+						throw new UserWithOutCreditException("El monto de la jugada es mayor al monto disponible");
+					}
+				}
+
+				oJugadaTO.getFechaExp();
+				oJugadaTO.setMontoApostado(oCalculadoraForm.getMontoApostar());
+				oJugadaTO.setMontoPremio(String.valueOf(Constants.getMontoMaximoPago(oCalculadoraForm.getMontoApostar(), oCalculadoraForm.getMontoPremio())));
+				oJugadaTO.setMontoPagado("0");
+				oJugadaTO.setIdUsuario(oUsuarioTO.getIdUsuario());
+				oJugadaTO.setDiasExpira(Integer.parseInt(Constants.parseInt(oUsuarioTO.getDiasVencTicket()))>0?oUsuarioTO.getDiasVencTicket():oUsuarioTO.getSupervisor().getDiasVencTicket());
+				StringBuffer detalleEquipo = new StringBuffer();
+				String sep = "";
+				String sep0 = "(";
+				String sep1 = ")";
+				String guion = "-";
+				for (int i = 0; i < listaJugadas.size(); i++) {
+					detalleEquipo.append(sep);
+					oCalculadoraForm = (CalculadoraForm) listaJugadas.get(i);
+					detalleEquipo.append(oCalculadoraForm.getReferencia());
+					detalleEquipo.append(guion);
+					detalleEquipo.append(oCalculadoraForm.getEquipo());
+					detalleEquipo.append(sep0);
+					detalleEquipo.append(oCalculadoraForm.getTipo());
+					detalleEquipo.append("/ Hora: "+oCalculadoraForm.getHoraJuego());
+					detalleEquipo.append("/ Loteria: "+oCalculadoraForm.getCampeonato());
+					detalleEquipo.append(sep1);
+					sep="; ";
+				}
+				oJugadaTO.setDetalleEquipo(detalleEquipo.toString());
+				
+				if(listaJugadas.size()>0) {
+					
+					// cargamos los juegos en un map
+					StringBuffer idJuegos = new StringBuffer();
+					String separador = "";
+					for (int i = 0; i < listaJugadas.size(); i++) {
+						oCalculadoraForm = (CalculadoraForm) listaJugadas.get(i);
+						idJuegos.append(separador).append(oCalculadoraForm.getJuego());
+						separador = ",";
+					}
+					HashMap mapa = oJuegoDAO.cargarJuegoPorIdDAO(idJuegos.toString());
+					
+
+					// aplicamos las reglas a los juegos jugados
+					for (int i = 0; i < listaJugadas.size(); i++) {
+						oCalculadoraForm = (CalculadoraForm) listaJugadas.get(i);
+						// buscamos el juego para revisar su status
+						oJuegoTO = (JuegoTO)mapa.get(oCalculadoraForm.getJuego());
+
+						// revisamos el status
+						if(!oJuegoTO.getIdStatusJuego().equals(Constants.STATUS_JUEGO_ABIERTO)) {
+							throw new GameClosedException("El juego ya no esta abierto");
+						}
+						// revisamos la fecha
+						fechaSis = Date.getCalendar();
+						fechaSis.add(Calendar.MINUTE, Integer.parseInt(Constants.isNull(oJuegoTO.getMinutosCierre(),"0")));
+						fechaJuego = Constants.getFechaLargaSqlToJava(oJuegoTO.getFechaIni());
+
+						if(Date.convert(fechaSis).getTime()>=fechaJuego.getTime()) {
+							throw new GameClosedException("El juego ya no esta abierto");
+						}
+					}
+
+					// asignamos los items en esta jugada
+					oJugadaTO.setItemsJugada(String.valueOf(listaJugadas.size()));
+					
+
+					// INICIO DE VALIDACION DE COMBINACION
+					// revisamos la combinacion de las jugadas parley por taquilla
+					ArrayList listParley = new ArrayList();
+					StringBuffer parley = new StringBuffer();
+					for (int i = 0; i < listaJugadas.size(); i++) {
+						oCalculadoraForm = (CalculadoraForm) listaJugadas.get(i);
+
+						oJugadaJuegoEquipoTO.setIdJugada(oJugadaTO.getIdJugada());
+						oJugadaJuegoEquipoTO.setIdUsuarioJuegoEquipo(oCalculadoraForm.getCodigo());
+						oJugadaJuegoEquipoTO.setTipo(oCalculadoraForm.getTipo());
+						
+						parley.setLength(0);
+						parley.append(oJugadaJuegoEquipoTO.getIdUsuarioJuegoEquipo());
+						parley.append("-");
+						parley.append(oJugadaJuegoEquipoTO.getTipo());
+						parley.append("-");
+						listParley.add(parley.toString());
+
+					}
+					// ordenamos la combinacion
+					Collections.sort(listParley);
+					parley.setLength(0);
+					for (int i = 0; i < listParley.size(); i++) {
+						parley.append(listParley.get(i));
+					}
+					
+					//buscamos la combinacion en la tabla de combinaciones
+					double topePorCombinacion = 0;
+
+					topePorCombinacion = Double.parseDouble(oUsuarioTO.getTopePorCombinacion());
+
+					oCombinacionTO.setCombinacion(parley.toString());
+					oCombinacionTO.setIdUsuario(oJugadaTO.getIdUsuario());
+					oCombinacionTO.setMontoApuesta(oJugadaTO.getMontoApostado());
+					
+					double montoPorCombinacion = oCombinacionDAO.montoCombinacionPorUsuarioDAO(oCombinacionTO)[0];
+					double montoApuesta = Double.parseDouble(oJugadaTO.getMontoApostado());
+					
+					if (listParley.size()>1) {
+						if (topePorCombinacion > 0 && (montoPorCombinacion + montoApuesta) > topePorCombinacion) {
+							StringBuffer sb = new StringBuffer();
+							sb.append("El monto apostado sobrepasa el tope de apuestas por combinacion. Tope maximo = ");
+							sb.append(topePorCombinacion);
+							sb.append(", Monto acumulado = ");
+							sb.append(montoPorCombinacion);
+							throw new TopePorCombinacionExcedidoException(sb.toString(),topePorCombinacion, montoPorCombinacion);
+						}
+					}
+					// FIN validacion de combinacion
+					
+					// insertamos la jugada si paso las reglas
+					oJugadaDAO.insertarJugadaDAO(oJugadaTO);
+
+					for (int i = 0; i < listaJugadas.size(); i++) {
+						oCalculadoraForm = (CalculadoraForm) listaJugadas.get(i);
+						
+						// seleccionamos la fecha mayor para luego colocarla en el vencimiento
+						if(fechaUltimoJuego==null || fechaUltimoJuego.getTime()<fechaJuego.getTime() ) {
+							fechaUltimoJuego = fechaJuego;
+						}
+						
+						oJugadaJuegoEquipoTO.setIdJugada(oJugadaTO.getIdJugada());
+						oJugadaJuegoEquipoTO.setIdUsuarioJuegoEquipo(oCalculadoraForm.getCodigo());
+						oJugadaJuegoEquipoTO.setTipo(oCalculadoraForm.getTipo());
+						
+						// validamos que los logros sean los ultimos que estan registrados
+						oUsuarioJuegoEquipoTO.setIdJuegoEquipo(oJugadaJuegoEquipoTO.getIdUsuarioJuegoEquipo());
+						oUsuarioJuegoEquipoDAO.obtenerUltimoLogroRegistradoDAO(oUsuarioJuegoEquipoTO); // pendiente
+						oJugadaJuegoEquipoTO.setIdUsuarioJuegoEquipo(oUsuarioJuegoEquipoTO.getIdUsuarioJuegoEquipo());
+						
+						oJugadaJuegoEquipoDAO.insertarJugadaJuegoEquipoDAO(oJugadaJuegoEquipoTO);
+					}
+					
+					// actualizamos el monto del premio
+					// por si cambiaron los logros
+					oJugadaDAO.recalcularPremioJugadaDAO(oJugadaTO, oUsuarioTO);
+					
+					
+					// insertamos la combinacion de la jugada
+					oCombinacionTO.setIdJugada(oJugadaTO.getIdJugada());
+					oCombinacionDAO.insertarCombinacionDAO(oCombinacionTO);
+					
+					
+				} else {
+					// no hay detalle en la jugada
+					throw new GameClosedException("No hay detalle de equipos en la jugada");
+				}
+				
+				// colocamos la fecha de vencimiento y actualizamos la jugada
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				oJugadaTO.setFechaExp(Constants.getFechaLargaSQL(sdf.format(fechaUltimoJuego).concat(" 23:59:59"), Integer.parseInt(Constants.isNull(oJugadaTO.getDiasExpira(),"0"))));
+				oJugadaDAO.actualizarJugadaDAO(oJugadaTO);
+				
+				// revisamos la fecha de vencimiento, para que no quede nula desde la base de datos
+				oJugadaDAO.actualizarFechaVencimientoJugadaDAO(oJugadaTO);
+				
+
+				/* rebajamos el saldo del jugador */
+				oCuentaJugadorTO.setReferencia(Constants.numero(oJugadaTO.getIdJugada(), 10));
+				oCuentaJugadorTO.setOperacion(Constants.OPERACION_EGRESO);
+				oCuentaJugadorTO.setMonto(oCalculadoraForm.getMontoApostar());
+				oCuentaJugadorTO.setConcepto(Constants.CONCEPTO_JUGADA);
+				oCuentaJugadorTO.setIdJugador(oUsuarioTO.getIdUsuario());
+				oCuentaJugadorTO.setIdUsuario(oUsuarioTO.getIdUsuario());
+				oCuentaJugadorTO.setTipo(Constants.CUENTA_JUGADOR_TIPO_JUGADA);
+				oCuentaJugadorDAO.insertarCuentaJugadorDAO(oCuentaJugadorTO);
+
+			}
+		} catch (GameClosedException e) {
+			isError = true;
+			throw e;
+		} catch (UserWithOutCreditException e) {
+			isError = true;
+			throw e;
+		} catch (TopePorCombinacionExcedidoException e) {
+			isError = true;
+			throw e;
+		} catch (Exception e) {
+			isError = true;
+			log.info("Error en la ejecucion de JuegoFacade.registrarJugadaFacade");
+			log.error("Error:" + e.getMessage());
+			e.printStackTrace();
+			throw new Exception("Ocurrio un error al intentar eliminar el registro");
+		} finally {
+			try {
+				if (isError) {
+					oEjecutorSql.rollback();
+				}
+				oEjecutorSql.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+		return oJugadaTO;
+	}
 
 	/**
 	 * Devuelve una lista de objetos

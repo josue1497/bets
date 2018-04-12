@@ -1075,38 +1075,6 @@ public class Constants {
 
 	}
 	
-	public static String findAnimalitos(int idLiga) {
-		
-		EjecutorSql	oEjecutorSql =  new EjecutorSql();
-		StringBuilder cadena = new StringBuilder();
-		String sep = "";
-		String coma = ",";	
-		
-		StringBuilder query= new StringBuilder("select b.id_equipo as ID, b.desc_equipo as EQUIPO ")
-				.append(" from equipo_liga a inner join equipo b ")
-				.append(" on (a.id_equipo=b.id_equipo) where id_liga=?");
-		
-		ArrayList<Integer> parameters= new ArrayList<Integer>(); 
-		parameters.add(idLiga);
-		
-		try {
-			CachedRowSet result = oEjecutorSql.ejecutaQuery(query.toString(), parameters);
-
-			cadena.append("[");
-			while (result.next()) {
-				cadena.append(sep);
-				cadena.append("{'ID':").append(result.getString("ID"));
-				cadena.append(",'EQUIPO':").append(result.getString("EQUIPO"));
-				cadena.append("}");
-				sep = coma;
-			}
-			cadena.append("]");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return cadena.toString();
-		
-	}
+	
 
 }

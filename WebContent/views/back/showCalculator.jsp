@@ -264,7 +264,7 @@ if(session.getAttribute("sendErrores")!=null) {
 								<td class="calculadora" >Monto de la apuesta&nbsp;:</td>
 								<td  align="right" style="color:#ffffff;">
 									<%=Constants.getDominio(request).getMoneda()%>&nbsp;
-									<input type="text" name="montoApostar" maxlength="9" size="9"  style="text-align:right;font-size:18px;font-weight:bold;" onkeyup="premio(event,this)"
+									<input type="text" name="montoApostar" maxlength="9" size="9"  style="text-align:right;font-size:18px;font-weight:bold;" onchange="premio(event,this)"
 										style="background:#c0c0c0;" 
 										onfocus="this.style.background='yellow'" 
 										onblur="this.style.background='#c0c0c0'" >

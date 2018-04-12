@@ -1,5 +1,7 @@
 package com.betcesc.game.ctrl.back;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
@@ -46,6 +48,7 @@ import com.betcesc.game.to.DeporteTO;
 import com.betcesc.game.to.JuegoEquipoTO;
 import com.betcesc.game.to.JugadaJuegoEquipoTO;
 import com.betcesc.game.to.ParametrosTO;
+import com.jade.util.lbda.EjecutorSql;
 
 public class ListGamePlayAction extends Action {
 
@@ -161,6 +164,34 @@ public class ListGamePlayAction extends Action {
 						calc.setDeporte(idDeporte[i]); // request.getParameter("deporte"));
 						calc.setMontoApostar(request.getParameter("montoApostar"));
 						calc.setMontoPremio(request.getParameter("montoPremio"));
+						
+						EjecutorSql sql;
+						DateFormat format = new SimpleDateFormat("HHmm");
+						
+						if ("26".equals(calc.getDeporte())) {
+							sql = new EjecutorSql();
+							StringBuilder query = new StringBuilder(
+									"select * from juego where id_juego='" + calc.getPadre() + "'");
+							ArrayList list = new ArrayList();
+							CachedRowSet result = sql.ejecutaQuery(query.toString(), list);
+
+							int idCampeonato = 0;
+							while (result.next()) {
+								calc.setHoraJuego(format.format(result.getDate("fecha_ini")));
+								idCampeonato = result.getInt("id_campeonato");
+							}
+
+							query = new StringBuilder(
+									" select * from campeonato where id_campeonato =" + idCampeonato + "");
+
+							CachedRowSet result2 = sql.ejecutaQuery(query.toString(), new ArrayList());
+
+							while (result2.next()) {
+								calc.setCampeonato(result2.getString("desc_campeonato"));
+							}
+							 
+						}
+						//calc.getHoraJuego(padre[i]);
 						listaJugada.add(calc);
 
 						nLogro = Double.parseDouble(logro[i]);
@@ -296,7 +327,9 @@ public class ListGamePlayAction extends Action {
 								jug.add(calc);
 							}
 
-							JugadaIF oJugadaTO = juegoFacade.insertarJugadaFacade(listaJugada, usuario);
+							JugadaIF oJugadaTO = 26!=deporte
+									? juegoFacade.insertarJugadaFacade(listaJugada, usuario)
+									: juegoFacade.insertarJugadaAnimalitosFacade(listaJugada, usuario);
 							vacia = true;
 							if (usuario.getIdRol().equals(Constants.ROL_JUGADOR_DE_TAQUILLA)) {
 								// colocamos en session el ticket a imprimir
