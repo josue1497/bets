@@ -9,6 +9,7 @@ String basePath1 = request.getScheme()+"://"+request.getServerName()+":"+request
 UsuarioIF us = (UsuarioIF) request.getSession().getAttribute("usuario"); 
 boolean eliminada = false;
 boolean isMulti = false;
+boolean isAnimalito= false;
 %>
 <% CachedRowSet ticket = (CachedRowSet) request.getAttribute("ticket");
 String idJugada = "";
@@ -54,10 +55,10 @@ String horaJuego = "";
 	premio = ticket.getString("premio");
 	pagado = ticket.getString("pagado");
 	status = ticket.getString("status_jugada");
-	//horaJuego =ticket.getString("");
 	diaJugada = ticket.getString("dia");
 	diaActual = ticket.getString("dia_actual");
 	eliminada = ticket.getString("id_status_jugada").equals(Constants.STATUS_JUGADA_ELIMINADA);
+	isAnimalito = ticket.getString("id_deporte").equals(Constants.ID_DEPORTE_ANIMALITOS);
 	%>
 <%=ticket.getString("local").toUpperCase()%><br/>
 <%=Constants.isNull(ticket.getString("rif_supervisor"))?"":"RIF:".concat(ticket.getString("rif_supervisor").toUpperCase())%>
@@ -119,6 +120,8 @@ function pagarTicket(enl) {
 		<td class="tituloTabla tablaConBorde">Equipo</td>
 		<td class="tituloTabla tablaConBorde">Logro</td>
 		<td class="tituloTabla tablaConBorde" style="display:<%=!eliminada?"":"none"%>">Status</td>
+		<td class="tituloTabla tablaConBorde" style="display:<%=isAnimalito?"":"none"%>">Loteria</td>
+		<td class="tituloTabla tablaConBorde" style="display:<%=isAnimalito?"":"none"%>">Hora Sorteo</td>
 	</tr>	
 	<%do {
 		isMulti = ticket.getString("empate").equals(Constants.JUEGO_MULTIPLE_EQUIPO);
@@ -139,9 +142,16 @@ function pagarTicket(enl) {
 			<%}%>
 		</td>
 		
-		<td class="detalleTablaRight"><%=ticket.getString("logro").toUpperCase()%></td>
+		<td class="detalleTablaRight"><%=ticket.getString("logro").toUpperCase()%>	
+		</td>
 		<td class="detalleTablaLeft" style="display:<%=!eliminada?"":"none"%>">
 			<%=ticket.getString("desc_jugada")%>
+		</td>
+		<td class="detalleTablaLeft" style="display:<%=isAnimalito?"":"none"%>">
+			<%=ticket.getString("desc_campeonato")%>
+		</td>
+		<td class="detalleTablaLeft" style="display:<%=isAnimalito?"":"none"%>">
+			<%=ticket.getString("hora_sorteo")%>
 		</td>
 	</tr>	
 	<%} while(ticket.next());%>

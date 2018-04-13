@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Properties;
 
 import javax.servlet.http.HttpServletRequest;
@@ -134,7 +135,11 @@ public class ListGamePlayAction extends Action {
 				String[] logro = request.getParameterValues("logro");
 				String[] padre = request.getParameterValues("padre");
 				String[] idDeporte = request.getParameterValues("deporte");
-
+				int CantidadFilas = 0; request.getParameterValues("cantidadFilas");
+				
+				 String cantidadF = request.getParameter("cantidadFilas");
+				
+				
 				int numeroLogro = 0;
 				double montoOriginalJugada = 0;
 
@@ -195,10 +200,16 @@ public class ListGamePlayAction extends Action {
 						listaJugada.add(calc);
 
 						nLogro = Double.parseDouble(logro[i]);
+						boolean animalito = true;
 						if (nLogro > 0) {
-							apuesta = apuesta + (apuesta * (nLogro / 100));
-						}
-						else if (nLogro < 0) {
+							if ("26".equals(calc.getDeporte()) && animalito) {
+								apuesta = (apuesta/(Integer.parseInt(request.getParameter("montoApostar"))) * (nLogro/10));
+								calc.setMontoPremio(String.valueOf(apuesta));
+								animalito = false;
+							} else {
+								apuesta = apuesta + (apuesta * (nLogro / 100));
+							}
+						} else if (nLogro < 0) {
 							apuesta = apuesta + (apuesta / ((nLogro * -1) / 100));
 						}
 						montoPremio = Math.round(apuesta);

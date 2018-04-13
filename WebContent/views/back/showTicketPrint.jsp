@@ -7,6 +7,7 @@ String path1 = request.getContextPath();
 String basePath1 = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path1+"/";
 UsuarioIF us = (UsuarioIF) request.getSession().getAttribute("usuario"); 
 boolean isMulti = false;
+boolean isAnimalito = false;
 %>
 <link href="<%=basePath1%>css/style<%=Constants.getDominio(request).getDominio()%>.css" rel="stylesheet" type="text/css" />
 
@@ -22,7 +23,8 @@ String status = "";%>
 	idJugada = ticket.getString("id_jugada");
 	premio = ticket.getString("premio");
 	pagado = ticket.getString("pagado");
-	status = ticket.getString("status_jugada");%>
+	status = ticket.getString("status_jugada");
+	isAnimalito = ticket.getString("id_deporte").equals(Constants.ID_DEPORTE_ANIMALITOS);%>
 <%=ticket.getString("local").toUpperCase()%><br/>
 <%=Constants.isNull(ticket.getString("rif_supervisor"))?"":"RIF:".concat(ticket.getString("rif_supervisor").toUpperCase())%>
 <br/><br/>
@@ -48,6 +50,8 @@ function send(orden) {
 		<td class="tituloTablaBW tablaConBordeBW">Equipo</td>
 		<td class="tituloTablaBW tablaConBordeBW">Logro</td>
 		<td class="tituloTablaBW tablaConBordeBW">Status</td>
+		<td class="tituloTablaBW tablaConBordeBW" style="display:<%=isAnimalito?"":"none"%>">Loteria</td>
+		<td class="tituloTablaBW tablaConBordeBW"style="display:<%=isAnimalito?"":"none"%>">Hora Sorteo</td>
 	</tr>	
 	<%do {
 		isMulti = ticket.getString("empate").equals(Constants.JUEGO_MULTIPLE_EQUIPO);
@@ -70,6 +74,12 @@ function send(orden) {
 		
 		<td class="detalleTablaRightBW"><%=ticket.getString("logro").toUpperCase()%></td>
 		<td class="detalleTablaLeftBW"><%=ticket.getString("desc_jugada")%></td>
+		<td class="detalleTablaLeftBW" style="display:<%=isAnimalito?"":"none"%>">
+			<%=ticket.getString("desc_campeonato")%>
+		</td>
+		<td class="detalleTablaLeftBW" style="display:<%=isAnimalito?"":"none"%>">
+			<%=ticket.getString("hora_sorteo")%>
+		</td>
 	</tr>	
 	<%} while(ticket.next());%>
 </table>

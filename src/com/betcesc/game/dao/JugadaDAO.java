@@ -1018,8 +1018,9 @@ public class JugadaDAO {
 			strBuffquery.append("e.*,f.*,h.*,g.centro_hipico As local, g.rif As rif_supervisor, format(e.monto_apostado,2) As jugada, format(e.monto_premio,2) As premio, format(e.monto_pagado,2) As pagado,");
 			strBuffquery.append("DATE_FORMAT(e.fecha_sis,'%d/%m/%Y') dia, DATE_FORMAT(e.fecha_sis,'%h:%i%p') hora, g.ticket_nota As nota, ");
 			strBuffquery.append("DATE_FORMAT(e.fecha_pago,'%d/%m/%Y') dia_pago, DATE_FORMAT(e.fecha_pago,'%h:%i%p') hora_pago ");
-			strBuffquery.append(", e.detalle_equipo, DATE_FORMAT(now(),'%d/%m/%Y') dia_actual, e.cancelada "); // adicional
-			strBuffquery.append("FROM jugada_juego_equipo a ,usuario_juego_equipo b, juego_equipo c,equipo d, jugada e, usuario f, usuario g, status_jugada h , juego j, deporte k ");
+			strBuffquery.append(", e.detalle_equipo, DATE_FORMAT(now(),'%d/%m/%Y') dia_actual, e.cancelada ");
+			strBuffquery.append(" , t.desc_campeonato desc_campeonato, DATE_FORMAT(j.fecha_ini, '%h:%i %p') as hora_sorteo ");// adicional
+			strBuffquery.append("FROM jugada_juego_equipo a ,usuario_juego_equipo b, juego_equipo c,equipo d, jugada e, usuario f, usuario g, status_jugada h , juego j, deporte k, campeonato t ");
 			strBuffquery.append("WHERE a.id_usuario_juego_equipo=b.id_usuario_juego_equipo ");
 			strBuffquery.append("AND b.id_juego_equipo=c.id_juego_equipo ");
 			strBuffquery.append("AND c.id_equipo=d.id_equipo ");
@@ -1030,6 +1031,7 @@ public class JugadaDAO {
 			strBuffquery.append("AND f.id_supervisor=g.id_usuario ");
 			strBuffquery.append("AND c.id_juego=j.id_juego ");
 			strBuffquery.append("AND j.id_deporte=k.id_deporte ");
+			strBuffquery.append("AND t.id_campeonato = j.id_campeonato");
 
 			//oEjecutorSql.printQuery(strBuffquery.toString(), oParametros);
 			oCachedRowSet = oEjecutorSql.ejecutaQuery(strBuffquery.toString(), oParametros);

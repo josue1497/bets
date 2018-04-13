@@ -1810,8 +1810,8 @@ public class JuegoFacade {
 					detalleEquipo.append(oCalculadoraForm.getEquipo());
 					detalleEquipo.append(sep0);
 					detalleEquipo.append(oCalculadoraForm.getTipo());
-					detalleEquipo.append("/ Hora: "+oCalculadoraForm.getHoraJuego());
-					detalleEquipo.append("/ Loteria: "+oCalculadoraForm.getCampeonato());
+					detalleEquipo.append("-"+oCalculadoraForm.getHoraJuego());
+					detalleEquipo.append("-"+oCalculadoraForm.getCampeonato());
 					detalleEquipo.append(sep1);
 					sep="; ";
 				}

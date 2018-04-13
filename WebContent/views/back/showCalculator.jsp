@@ -33,6 +33,7 @@ if(session.getAttribute("sendErrores")!=null) {
 	
 	var logrosCalc = new Array();
 	var reglasPago = null;
+	var cantidadFilas=0;
 	<%if(Constants.isNull(usuario.getPagoVeces(),"").equals("")){%>
 		var pagoVeces = new Array();
 	<%} else {%>
@@ -57,7 +58,7 @@ if(session.getAttribute("sendErrores")!=null) {
 				numero[k].value=logrosCalc[k].numero;
 				padre[k].value=logrosCalc[k].padre;
 				deporte[k].value=logrosCalc[k].deporte;
-	
+				
 				// si es juego teaser ocultamos el logro
 				logro[k].style.color='#fff';
 				if(logrosCalc[k].referencia.charAt(0)=='T') {
@@ -102,6 +103,7 @@ if(session.getAttribute("sendErrores")!=null) {
 			if(animalito){
 				apuesta=(apuesta*(logro[0].value/10));
 				montoPremio.value = Math.round(apuesta);
+				cantidadFilas.value=logrosCalc.length;
 			}
 			montoApostar.value = montoApostar.value*logrosCalc.length;
 			
@@ -254,6 +256,7 @@ if(session.getAttribute("sendErrores")!=null) {
 	<input type="hidden" name="teaser" value="false"/>
 	<input type="hidden" name="isFree" value="0"/>
 	<input type="hidden" name="simple" value="true"/>
+	<input type="hidden" name="cantidadFilas" value="0"/>
 	<fieldset>
 			<legend class="tituloTablaSup">CALCULO DE LA JUGADA</legend>
 			<table align="center" width="100%"  border="0">
