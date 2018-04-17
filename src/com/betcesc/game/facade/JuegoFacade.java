@@ -1543,7 +1543,12 @@ public class JuegoFacade {
 
 				oJugadaTO.getFechaExp();
 				oJugadaTO.setMontoApostado(oCalculadoraForm.getMontoApostar());
-				oJugadaTO.setMontoPremio(String.valueOf(Constants.getMontoMaximoPago(oCalculadoraForm.getMontoApostar(), oCalculadoraForm.getMontoPremio())));
+				if(!"26".equals(oCalculadoraForm.getDeporte()))
+					oJugadaTO.setMontoPremio(String.valueOf(Constants.getMontoMaximoPago(oCalculadoraForm.getMontoApostar(), oCalculadoraForm.getMontoPremio())));
+				else
+					oJugadaTO.setMontoPremio(oCalculadoraForm.getMontoPremio());
+				
+				
 				oJugadaTO.setMontoPagado("0");
 				oJugadaTO.setIdUsuario(oUsuarioTO.getIdUsuario());
 				oJugadaTO.setDiasExpira(Integer.parseInt(Constants.parseInt(oUsuarioTO.getDiasVencTicket()))>0?oUsuarioTO.getDiasVencTicket():oUsuarioTO.getSupervisor().getDiasVencTicket());

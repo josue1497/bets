@@ -101,7 +101,7 @@ if(session.getAttribute("sendErrores")!=null) {
 				}
 			}
 			if(animalito){
-				apuesta=(apuesta*(logro[0].value/10));
+				apuesta=apuesta+logro[0].value*(logro[0].value/100);
 				montoPremio.value = Math.round(apuesta);
 				cantidadFilas.value=logrosCalc.length;
 			}

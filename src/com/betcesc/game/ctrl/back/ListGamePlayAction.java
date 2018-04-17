@@ -135,9 +135,8 @@ public class ListGamePlayAction extends Action {
 				String[] logro = request.getParameterValues("logro");
 				String[] padre = request.getParameterValues("padre");
 				String[] idDeporte = request.getParameterValues("deporte");
-				int CantidadFilas = 0; request.getParameterValues("cantidadFilas");
 				
-				 String cantidadF = request.getParameter("cantidadFilas");
+				 int cantidadF = Integer.parseInt(request.getParameter("cantidadFilas"));
 				
 				
 				int numeroLogro = 0;
@@ -151,7 +150,7 @@ public class ListGamePlayAction extends Action {
 				}
 
 				montoOriginalJugada = apuesta;
-
+				boolean animalito = true;
 				CalculadoraForm calc = null;
 				for (int i = 0; i < codigo.length; i++) {
 					if (codigo[i] != null && !codigo[i].trim().equals("")) {
@@ -200,18 +199,20 @@ public class ListGamePlayAction extends Action {
 						listaJugada.add(calc);
 
 						nLogro = Double.parseDouble(logro[i]);
-						boolean animalito = true;
+						
 						if (nLogro > 0) {
 							if ("26".equals(calc.getDeporte()) && animalito) {
-								apuesta = (apuesta/(Integer.parseInt(request.getParameter("montoApostar"))) * (nLogro/10));
+								apuesta = apuesta/cantidadF;
+								apuesta = apuesta+(nLogro*(nLogro/100));
 								calc.setMontoPremio(String.valueOf(apuesta));
 								animalito = false;
-							} else {
+							} else if (!"26".equals(calc.getDeporte())){
 								apuesta = apuesta + (apuesta * (nLogro / 100));
 							}
 						} else if (nLogro < 0) {
 							apuesta = apuesta + (apuesta / ((nLogro * -1) / 100));
 						}
+//						montoPremio = Math.round(apuesta/cantidadF);
 						montoPremio = Math.round(apuesta);
 
 						numeroLogro++;
@@ -338,9 +339,7 @@ public class ListGamePlayAction extends Action {
 								jug.add(calc);
 							}
 
-							JugadaIF oJugadaTO = 26!=deporte
-									? juegoFacade.insertarJugadaFacade(listaJugada, usuario)
-									: juegoFacade.insertarJugadaAnimalitosFacade(listaJugada, usuario);
+							JugadaIF oJugadaTO =  juegoFacade.insertarJugadaFacade(listaJugada, usuario);
 							vacia = true;
 							if (usuario.getIdRol().equals(Constants.ROL_JUGADOR_DE_TAQUILLA)) {
 								// colocamos en session el ticket a imprimir
