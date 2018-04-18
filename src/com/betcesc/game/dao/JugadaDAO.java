@@ -222,6 +222,9 @@ public class JugadaDAO {
 		boolean jugador = false;
 		String idJugador = "";
 		UsuarioIF usuarioJugada = new UsuarioTO();
+		int premioAnimalito = 0;
+		boolean animalito=false;
+		int totalAnimalitos=0;
 
 		try {
 			// primero cargamos la jugada
@@ -236,13 +239,14 @@ public class JugadaDAO {
 			strBuffquery.append("SELECT c.id_jugada,c.tipo,c.id_status_jugada,e.id_usuario As jugador_jugada,f.id_supervisor,f.id_rol As rol_usuario,g.id_rol As rol_supervisor, g.dias_venc_ticket As dias_vencimiento, ");
 			strBuffquery.append("if(c.tipo='A' or c.tipo='B',b.total,if(c.tipo='RL',b.spread,if(c.tipo='SR',b.super_spread,0))) As cantidad,  ");
 			strBuffquery.append("if(c.tipo='A' or c.tipo='B',b.total_logro,if(c.tipo='RL',b.spread_logro,if(c.tipo='SR',b.super_spread_logro,if(c.tipo IN ('ML','E','SI','NO','AP'),b.money_line,0)))) As logro, ");
-			strBuffquery.append("f.pago_veces ");
-			strBuffquery.append("FROM juego_equipo a, usuario_juego_equipo b, jugada_juego_equipo c, jugada e, usuario f, usuario g ");
+			strBuffquery.append("f.pago_veces , h.id_deporte as id_deporte ");
+			strBuffquery.append("FROM juego_equipo a, usuario_juego_equipo b, jugada_juego_equipo c, jugada e, usuario f, usuario g , juego h ");
 			strBuffquery.append("WHERE a.id_juego_equipo = b.id_juego_equipo  ");
 			strBuffquery.append("AND b.id_usuario_juego_equipo = c.id_usuario_juego_equipo ");
 			strBuffquery.append("AND c.id_jugada = e.id_jugada ");
 			strBuffquery.append("AND e.id_usuario = f.id_usuario ");
 			strBuffquery.append("AND f.id_supervisor = g.id_usuario ");
+			strBuffquery.append(" and h.id_juego = a.id_juego ");
 			strBuffquery.append("AND c.id_jugada=? ");
 
 			oCachedRowSet = oEjecutorSql.ejecutaQuery(strBuffquery.toString(), oParametros);
@@ -267,7 +271,7 @@ public class JugadaDAO {
 				// si es asi pierde la jugada
 				oCachedRowSet.beforeFirst();
 				while (oCachedRowSet.next()) {
-					if (oCachedRowSet.getString("id_status_jugada").equals(Constants.STATUS_JUGADA_PERDEDOR)) {
+					if (oCachedRowSet.getString("id_status_jugada").equals(Constants.STATUS_JUGADA_PERDEDOR) && !"26".equals(oCachedRowSet.getString("id_deporte"))) {
 						perdedor = true;
 						break;
 					}
@@ -304,15 +308,23 @@ public class JugadaDAO {
 								gano = true;
 								logro = Double.parseDouble(Constants.isNull(oCachedRowSet.getString("logro"), "0"));
 								if (logro > 0) {
+									if("26".equals(oCachedRowSet.getString("id_deporte"))) {
+										premioAnimalito++;
+										animalito=true;
+									}
 									apostado += apostado * (logro / 100);
 								} else if (logro < 0) {
 									apostado += apostado / (((-1) * logro) / 100);
 								}
 								numeroLogro++;
 							}
+							totalAnimalitos++;
 							cerrar = true;
 
 						}
+						if (animalito)
+							apostadoInicial = apostadoInicial/ totalAnimalitos;
+							apostado = (apostadoInicial + (apostadoInicial * (logro / 100))) * premioAnimalito;
 						if (!gano) {
 							apostado = 0;
 						} else {

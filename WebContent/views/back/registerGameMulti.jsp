@@ -477,7 +477,6 @@ function igualarTotal(ind) {
 <html:hidden name="juego" property="idJuego"/>
 <html:hidden name="juego" property="idStatusJuego"/>
 <html:hidden name="juego" property="idCampeonato"/>
-<html:hidden name="juego" property="idDeporte"/>
 <input type="hidden" name="eliminar" value="false"/>
 <input type="hidden" name="abrir" value="false"/>
 <select name="lista" 
