@@ -1151,7 +1151,7 @@ public class JuegoDAO {
 				strBuffquery.append(",j.id_usuario As id_usuario_detalle,j.id_usuario_juego_equipo,f.id_juego_equipo ");
 				strBuffquery.append(",f.referencia,f.referencia_runline,f.referencia_super_runline,f.referencia_ab,f.id_equipo,g.abreviatura ");
 				strBuffquery.append(",g.desc_equipo,i.nombre_lanzador,h.id_lanzador,j.spread_logro,j.super_spread_logro,j.total_logro ");
-				strBuffquery.append(",j.money_line ");
+				strBuffquery.append(",j.money_line , b.desc_campeonato as campeonato ");
 			}
 			strBuffquery.append("FROM juego a ");
 			strBuffquery.append("LEFT OUTER JOIN campeonato b ON a.id_campeonato=b.id_campeonato ");

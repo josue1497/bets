@@ -322,9 +322,10 @@ public class JugadaDAO {
 							cerrar = true;
 
 						}
-						if (animalito)
+						if (animalito) {
 							apostadoInicial = apostadoInicial/ totalAnimalitos;
-							apostado = (apostadoInicial + (apostadoInicial * (logro / 100))) * premioAnimalito;
+							apostado = (apostadoInicial*30) * premioAnimalito;
+							}
 						if (!gano) {
 							apostado = 0;
 						} else {

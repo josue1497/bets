@@ -150,7 +150,7 @@ public class ListGamePlayAction extends Action {
 				}
 
 				montoOriginalJugada = apuesta;
-				boolean animalito = true;
+				boolean animalito=false;
 				CalculadoraForm calc = null;
 				for (int i = 0; i < codigo.length; i++) {
 					if (codigo[i] != null && !codigo[i].trim().equals("")) {
@@ -173,6 +173,7 @@ public class ListGamePlayAction extends Action {
 						DateFormat format = new SimpleDateFormat("HHmm");
 						
 						if ("26".equals(calc.getDeporte())) {
+							animalito = true;
 							sql = new EjecutorSql();
 							StringBuilder query = new StringBuilder(
 									"select * from juego where id_juego='" + calc.getPadre() + "'");
@@ -195,7 +196,6 @@ public class ListGamePlayAction extends Action {
 							}
 							 
 						}
-						//calc.getHoraJuego(padre[i]);
 						listaJugada.add(calc);
 
 						nLogro = Double.parseDouble(logro[i]);
@@ -203,7 +203,7 @@ public class ListGamePlayAction extends Action {
 						if (nLogro > 0) {
 							if ("26".equals(calc.getDeporte()) && animalito) {
 								apuesta = apuesta/cantidadF;
-								apuesta = apuesta+(nLogro*(nLogro/100));
+								apuesta = apuesta*30;
 								calc.setMontoPremio(String.valueOf(apuesta));
 								animalito = false;
 							} else if (!"26".equals(calc.getDeporte())){

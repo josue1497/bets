@@ -46,7 +46,6 @@ if(session.getAttribute("sendErrores")!=null) {
 		reglasPago=reglasPagoPadre;
 		limpiar();
 		with(document.forms[0]) {
-			premio(null,null);
 			for(var k=0; k<logrosCalc.length; k++) {
 				codigo[k].value=logrosCalc[k].codigo;
 				tipo[k].value=logrosCalc[k].tipo;
@@ -65,7 +64,6 @@ if(session.getAttribute("sendErrores")!=null) {
 					logro[k].style.color='#000';
 				} 
 	
-				premio(null,null);
 				
 			}
 		}
@@ -92,8 +90,9 @@ if(session.getAttribute("sendErrores")!=null) {
 							var animalito = "true";
 							continue;
 						}
-						else	
+						else if(logrosCalc[y].deporte!="26"){
 						apuesta = apuesta+(apuesta*(logro[y].value/100));
+						}
 					} else if(logro[y].value<0) {
 						apuesta = apuesta+(apuesta*((logro[y].value*-1)/100));
 					}
@@ -101,11 +100,12 @@ if(session.getAttribute("sendErrores")!=null) {
 				}
 			}
 			if(animalito){
-				apuesta=apuesta+logro[0].value*(logro[0].value/100);
+				apuesta=apuesta*30;
 				montoPremio.value = Math.round(apuesta);
 				cantidadFilas.value=logrosCalc.length;
+				montoApostar.value = montoApostar.value*logrosCalc.length;
 			}
-			montoApostar.value = montoApostar.value*logrosCalc.length;
+			
 			
 			// aplicamos las reglas
 			montoApuesta=parseInt(montoApostar.value);
@@ -167,6 +167,7 @@ if(session.getAttribute("sendErrores")!=null) {
 			document.forms[0].agregar.value="true";
 			window.parent.desmarcar();
 			document.forms[0].submit();
+			limpiar();
 		} else {
 			try {
 				document.forms[0].numeroRef.focus();
@@ -186,6 +187,7 @@ if(session.getAttribute("sendErrores")!=null) {
 				numero[f].value="";
 				padre[f].value="";
 				deporte[f].value="";
+				
 			}
 		}
 	}
@@ -267,8 +269,7 @@ if(session.getAttribute("sendErrores")!=null) {
 								<td class="calculadora" >Monto de la apuesta&nbsp;:</td>
 								<td  align="right" style="color:#ffffff;">
 									<%=Constants.getDominio(request).getMoneda()%>&nbsp;
-									<input type="text" name="montoApostar" maxlength="9" size="9"  style="text-align:right;font-size:18px;font-weight:bold;" onchange="premio(event,this)"
-										style="background:#c0c0c0;" 
+									<input type="text" name="montoApostar" maxlength="9" size="9"  style="text-align:right;font-size:18px;font-weight:bold;background:#c0c0c0;"
 										onfocus="this.style.background='yellow'" 
 										onblur="this.style.background='#c0c0c0'" >
 								</td>
@@ -287,12 +288,12 @@ if(session.getAttribute("sendErrores")!=null) {
 				</tr>
 				<%for(int i=0; i<logros;i++) {%>
 				<tr>
-					<td class="calculadora" ><input type="hidden" name="codigo" class="inputTextSingleCalc"/><input type="hidden" name="padre" class="inputTextSingleCalc"/>
+					<td class="calculadora result" ><input type="hidden" name="codigo" class="inputTextSingleCalc"/><input type="hidden" name="padre" class="inputTextSingleCalc"/>
 						<input type="hidden" name="deporte" /><input type="text" name="tipo" class="inputTextSingleCalc"  readOnly="yes" style="width:20px"/></td>
-					<td class="calculadora" ><input type="text" name="cantidad" class="inputTextSingleCalc" style="width:30px"/  readOnly="yes"></td>
-					<td class="calculadora" ><input type="text" name="referencia" class="inputTextSingleLeftCalc" style="width:60px" readOnly="yes"/></td>
-					<td class="calculadora"><input type="text" name="equipo" class="inputTextSingleCalc" style="width:70px;text-align:left;"  readOnly="yes"/></td>
-					<td class="calculadora" >
+					<td class="calculadora result" ><input type="text" name="cantidad" class="inputTextSingleCalc" style="width:30px"/  readOnly="yes"></td>
+					<td class="calculadora result" ><input type="text" name="referencia" class="inputTextSingleLeftCalc" style="width:60px" readOnly="yes"/></td>
+					<td class="calculadora result"><input type="text" name="equipo" class="inputTextSingleCalc" style="width:70px;text-align:left;"  readOnly="yes"/></td>
+					<td class="calculadora result" >
 						<input type="text" name="logro" class="inputTextSingleRightCalc" size="3" readOnly="yes"/>
 						<input type="hidden" name="juego"/>
 						<input type="hidden" name="numero"/>
@@ -322,6 +323,7 @@ if(session.getAttribute("sendErrores")!=null) {
 			<center>
 			<span id="installOK">
 			<%if(usuario.getIdRol().equals(Constants.ROL_JUGADOR_DE_TAQUILLA)){%>
+			  <a class="enlaceBoton" onclick="premio(event,document.forms[0].montoApostar)">Calcular Premio</a> <br>
 		      <a class="enlaceBoton" href="#" onclick="enviar()" style="width:200px;"><bean:message key="boton.agregarImprimir"/></a> 
 
 		      <br/>

@@ -148,6 +148,9 @@ String.prototype.trim = function() { return this.replace(/^\s*|\s*$/g,""); };
 
 var isTaquilla = <%=isTaquilla%>;
 var logrosCalc = new Array();
+var acumulatedSports = new Array();
+var gameSel = false;
+var animSel = false;
 var saldoActual = <%=saldoNumerico%>;
 var saldoFreeActual = <%=saldoFreeNumerico%>;
 var reglasPago = <%=Constants.getReglasPagoJS()%>;
@@ -372,11 +375,11 @@ function isValido(jug,j,n,nombre,ref,deporte) {
 
 	//alert(jug+' '+j+' '+n+' '+nombre+' '+ref+' '+deporte);
 	// validamos por id de juego
-	if(document.getElementsByName("JuegoSeleccionado").value==undefined)
-		document.getElementsByName("JuegoSeleccionado").value='false';
+// 	if(document.getElementsByName("JuegoSeleccionado").value==undefined)
+// 		document.getElementsByName("JuegoSeleccionado").value='false';
 	
-	if(document.getElementsByName("AnimalitoSeleccionado").value==undefined)
-		document.getElementsByName("AnimalitoSeleccionado").value='false';
+// 	if(document.getElementsByName("AnimalitoSeleccionado").value==undefined)
+// 		document.getElementsByName("AnimalitoSeleccionado").value='false';
 	
 	var bloqueados = ',<%=request.getAttribute("JUEGOS_BLOQUEADOS")%>,';
 	for(var p=0; p < jug.length; p++) {
@@ -431,21 +434,16 @@ function isValido(jug,j,n,nombre,ref,deporte) {
 		return -1;
 	}
 	
-	if(deporte==<%=Constants.ID_DEPORTE_ANIMALITOS%> && 
-			document.getElementsByName("JuegoSeleccionado").value=='false'){
-		document.getElementsByName("AnimalitoSeleccionado").value='true';
-	}else if(deporte!=<%=Constants.ID_DEPORTE_ANIMALITOS%> && 
-			document.getElementsByName("AnimalitoSeleccionado").value=='false'){
-		document.getElementsByName("JuegoSeleccionado").value='true';
+	if(deporte==<%=Constants.ID_DEPORTE_ANIMALITOS%> &&  !gameSel){
+		animSel=true;
+	}
+	if(deporte!=<%=Constants.ID_DEPORTE_ANIMALITOS%> && !animSel){
+		gameSel=true;
 	}
 	
-	if(deporte!=<%=Constants.ID_DEPORTE_ANIMALITOS%> && 
-			document.getElementsByName("AnimalitoSeleccionado").value=='true' && 
-				document.getElementsByName("JuegoSeleccionado").value=='false')
+	if(deporte!=<%=Constants.ID_DEPORTE_ANIMALITOS%> && animSel )
 		return -2;
-	if(deporte==<%=Constants.ID_DEPORTE_ANIMALITOS%> &&
-			document.getElementsByName("AnimalitoSeleccionado").value=='false' && 
-				document.getElementsByName("JuegoSeleccionado").value=='true')
+	if(deporte==<%=Constants.ID_DEPORTE_ANIMALITOS%> && gameSel)
 		return -2;
 	
 	var con=0;
@@ -588,7 +586,11 @@ function desmarcar() {
 	}
 	try{
 		document.getElementById('franjaErrores').innerHTML='';
-	}catch(e){}
+		document.getElementById("JuegoSeleccionado").value="false";
+		document.getElementById("AnimalitoSeleccionado").value="false";
+	}catch(e){
+		window.alert('error1');
+	}
 }
 function findReferencia(numRef) {
 	var ele = "";
@@ -660,14 +662,27 @@ function changeCellClick(el) {
 			if(hacer) {
 				if(el.onmouseout==null) {
 					changeCellOut(el);
+					window.frames.frmCalculadora.document.forms[0].montoApostar.value='';
+					window.frames.frmCalculadora.document.forms[0].montoPremio.value='';
 					el.onmouseout=function() {
 						el.style.background="";
 						el.style.color="#ffffff";
+						var pos =acumulatedSports.indexOf(el);
+						acumulatedSports.splice(pos,1);
+						console.log(acumulatedSports.length);
+						if(acumulatedSports.length==0){
+							animSel = false;
+							gameSel= false;
+						}
 					}
 				} else {
 					el.onmouseout=null;
+					window.frames.frmCalculadora.document.forms[0].montoApostar.value='';
+					window.frames.frmCalculadora.document.forms[0].montoPremio.value='';
 					el.style.background="#ffff33";
 					el.style.color="#000000";
+					acumulatedSports.push(el);
+					console.log(acumulatedSports);
 				}
 			}
 		}
@@ -692,8 +707,8 @@ function changeCellOut(el) {
 <input type="hidden" name="idDeporte" value=""/>
 <input type="hidden" name="agregar" value="false"/>
 <input type="hidden" name="teaser" value="false"/>
-<input type="hidden" name="AnimalitoSeleccionado" value="false"/>
-<input type="hidden" name="JuegoSeleccionado" value="false"/>
+<input type="hidden" name="AnimalitoSeleccionado" id="AnimalitoSeleccionado" value="false"/>
+<input type="hidden" name="JuegoSeleccionado" id="JuegoSeleccionado" value="false"/>
 <input type="hidden" name="dominioActual" value="<%=usuario.getDominio()%>"/>
 
 <table align="center" width="100%"  cellspacing="0" cellpadding="0" border="0">
@@ -774,6 +789,7 @@ function changeCellOut(el) {
 				    int i=0;
 				    boolean isIni = false;
 				    boolean isLiga = false;
+				    boolean isAnimalito=false;
 				    String liga = "";
 				    String cadLiga = "";
 				    String color0 = "#000;";
@@ -801,6 +817,7 @@ function changeCellOut(el) {
 							isLiga = !liga.equals(cadLiga);							
 							
 							isBeisbol = listaJuego.getString("id_deporte").equals(Constants.ID_EQUIPO_BEISBOL);
+							isAnimalito = listaJuego.getString("id_deporte").equals(Constants.ID_DEPORTE_ANIMALITOS);
 							
 							i = (isIni?-1:i);
 							i++;
@@ -838,23 +855,23 @@ function changeCellOut(el) {
 						<table align="center" width="100%" class="cuadro"  cellspacing="1" cellpadding="1" border="0">
 							<tr class="tituloLiga" style="background-color:<%=fondo%>">
 								<td colspan="<%=isActiveSRL && isBeisbol?6:5%>" style="border-right:4px solid #000">Juego Completo</td>
-								<td colspan="3" style="border-right:4px solid #000">5to Inning o Primera Mitad</td>
-								<td colspan="1" style="border-right:4px solid #000">1er Inning</td>
-								<td colspan="1">Anota 1ro</td>
+								<%=!isAnimalito ? "<td colspan=\"3\" style=\"border-right:4px solid #000\">5to Inning o Primera Mitad</td>" : "" %>
+								<%=!isAnimalito ? "<td colspan=\"1\" style=\"border-right:4px solid #000\">1er Inning</td>" : "" %>
+								<%=!isAnimalito ? "<td colspan=\"1\">Anota 1ro</td>" : "" %>
 							</tr>
 								<%}%>
 							<tr class="titulo1" style="background-color:<%=fondo%>">
 								<td width="45px">Ref.</td>
-								<td><span  class="fechaJuego"><%=Constants.getFechaLargaSqlToHtml(listaJuego.getString("fecha_ini"))%></span></td>
+								<td><span  class="fechaJuego"><%=Constants.getFechaLargaSqlToHtml(listaJuego.getString("fecha_ini"))%> <%=isAnimalito ? " - "+listaJuego.getString("campeonato"): "" %></span></td>
 								<td width="50" >M.Line</td>
-								<td width="60" >R.Line</td>
+								<%=!isAnimalito ? "<td width=\"60\" >R.Line</td>" : "" %>
 								<%=isActiveSRL && isBeisbol?"<td width='60' >S.R.Line</td>":""%>
-								<td width="60" >A/B</td>
-								<td width="60" >M.Line</td>
-								<td width="60" >R.Line</td>
-								<td width="60" >A/B</td>
-								<td width="60" >M.Line</td>
-								<td width="60" >M.Line</td>
+								<%=!isAnimalito ? "<td width=\"60\" >A/B</td>" : "" %>
+								<%=!isAnimalito ? "<td width=\"60\" >M.Line</td>" : "" %>
+								<%=!isAnimalito ? "<td width=\"60\" >R.Line</td>" : "" %>
+								<%=!isAnimalito ? "<td width=\"60\" >A/B</td>" : "" %>
+								<%=!isAnimalito ? "<td width=\"60\" >M.Line</td>" : "" %>
+								<%=!isAnimalito ? "<td width=\"60\" >M.Line</td>" : "" %>
 							</tr>
 							<%}%>
 							<tr  style="background-color:<%=fondo%>">

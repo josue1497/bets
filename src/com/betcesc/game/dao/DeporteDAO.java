@@ -469,10 +469,11 @@ public class DeporteDAO {
 			oParametros.add(status ? Constants.STATUS_DEPORTE_ACTIVO : Constants.STATUS_DEPORTE_INACTIVO);
 
 			strBuffquery.append("SELECT a.id_deporte, a.desc_deporte, if(a.combinacion IS NULL,'',a.combinacion) As combinacion, a.items, a.empate, ");
-			strBuffquery.append("runline_inicio,runline_logro_inicio0,runline_logro_inicio1,altabaja_logro_inicio0,altabaja_logro_inicio1 ");
-			strBuffquery.append("FROM deporte a, juego b ");
-			strBuffquery.append("WHERE a.id_deporte = b.id_deporte ");
+			strBuffquery.append("runline_inicio,runline_logro_inicio0,runline_logro_inicio1,altabaja_logro_inicio0,altabaja_logro_inicio1 , c.desc_campeonato as campeonato ");
+			strBuffquery.append(" FROM deporte a, juego b , campeonato c ");
+			strBuffquery.append(" WHERE a.id_deporte = b.id_deporte ");
 			//strBuffquery.append("AND a.id_deporte NOT IN (?,?,?,?,?) ");
+			strBuffquery.append(" AND b.id_campeonato = c.id_campeonato ");
 			strBuffquery.append("AND a.id_deporte NOT IN (?,?,?,?) ");
 			strBuffquery.append("AND id_status_deporte=? ");
 			strBuffquery.append("AND b.id_status_juego=2 ");
@@ -488,7 +489,7 @@ public class DeporteDAO {
 				strBuffquery.append(" AND a.id_deporte!=");
 				strBuffquery.append(Constants.ID_EQUIPO_BEISBOL_0);
 			}
-			strBuffquery.append(" GROUP BY a.id_deporte, a.desc_deporte, if(a.combinacion IS NULL,'',a.combinacion), a.items, a.empate ");
+			strBuffquery.append(" GROUP BY a.id_deporte, a.desc_deporte, if(a.combinacion IS NULL,'',a.combinacion), a.items, a.empate , c.desc_campeonato ");
 			strBuffquery.append(" ORDER BY UPPER(a.desc_deporte) ");
 
 			oCachedRowSet = oEjecutorSql.ejecutaQuery(strBuffquery.toString(), oParametros);
