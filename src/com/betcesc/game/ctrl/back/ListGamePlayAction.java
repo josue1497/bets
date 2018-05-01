@@ -212,7 +212,6 @@ public class ListGamePlayAction extends Action {
 						} else if (nLogro < 0) {
 							apuesta = apuesta + (apuesta / ((nLogro * -1) / 100));
 						}
-//						montoPremio = Math.round(apuesta/cantidadF);
 						montoPremio = Math.round(apuesta);
 
 						numeroLogro++;
