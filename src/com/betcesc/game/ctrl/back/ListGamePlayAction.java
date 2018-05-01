@@ -206,7 +206,8 @@ public class ListGamePlayAction extends Action {
 								apuesta = apuesta*30;
 								calc.setMontoPremio(String.valueOf(apuesta));
 								animalito = false;
-							} else if (!"26".equals(calc.getDeporte())){
+							}
+							else {
 								apuesta = apuesta + (apuesta * (nLogro / 100));
 							}
 						} else if (nLogro < 0) {
