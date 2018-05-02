@@ -586,8 +586,10 @@ function desmarcar() {
 	}
 	try{
 		document.getElementById('franjaErrores').innerHTML='';
-		document.getElementById("JuegoSeleccionado").value="false";
-		document.getElementById("AnimalitoSeleccionado").value="false";
+		animSel=false;
+		gameSel=false;
+		acumulatedSports.length=0;
+		
 	}catch(e){
 		window.alert('error1');
 	}
@@ -682,7 +684,7 @@ function changeCellClick(el) {
 					el.style.background="#ffff33";
 					el.style.color="#000000";
 					acumulatedSports.push(el);
-					console.log(acumulatedSports);
+					console.log(acumulatedSports.length);
 				}
 			}
 		}
@@ -946,6 +948,8 @@ function changeCellOut(el) {
 		window.frames.frmCalculadora.document.forms[0].montoApostar.value='<%=cal.getMontoApostar()%>';
 		window.frames.frmCalculadora.document.forms[0].montoPremio.value='<%=cal.getMontoPremio()%>';
 	<%}%>
+	animSel=false;
+	gameSel=false;
 </script>
 <%}%>
 <script>

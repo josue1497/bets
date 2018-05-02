@@ -2,6 +2,8 @@
 <%@ page import="sun.jdbc.rowset.CachedRowSet" %>
 <%@ page import="com.betcesc.game.interfaces.UsuarioIF" %>
 <%@ page import="com.betcesc.game.common.Constants" %>
+<%@ page import="com.jade.util.Encriptor" %>
+
 <%@ include file="/views/common/taglibs.jsp"%>
 <%
 String path1 = request.getContextPath();
@@ -67,6 +69,7 @@ Ticket Nro.:<%=Constants.numero(ticket.getString("id_jugada"),10)%><br/>
 Fecha:<%=ticket.getString("dia")%><br/>
 Hora:<%=ticket.getString("hora")%><br/><br/>
 Jugada <%=Constants.getDominio(request).getMoneda()%> <%=ticket.getString("jugada")%>
+Clave:<%=Encriptor.getSID(ticket.getString("id_jugada"))%>
 <br/><br/>
 <script language="javascript">
 function send(orden) {

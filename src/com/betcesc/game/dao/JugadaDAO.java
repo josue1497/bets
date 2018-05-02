@@ -271,7 +271,8 @@ public class JugadaDAO {
 				// si es asi pierde la jugada
 				oCachedRowSet.beforeFirst();
 				while (oCachedRowSet.next()) {
-					if (oCachedRowSet.getString("id_status_jugada").equals(Constants.STATUS_JUGADA_PERDEDOR) && !"26".equals(oCachedRowSet.getString("id_deporte"))) {
+					if (oCachedRowSet.getString("id_status_jugada").equals(Constants.STATUS_JUGADA_PERDEDOR) 
+							&& !"26".equals(oCachedRowSet.getString("id_deporte"))) {
 						perdedor = true;
 						break;
 					}
@@ -287,6 +288,19 @@ public class JugadaDAO {
 						break;
 					}
 				}
+				
+				oCachedRowSet.beforeFirst();
+				while (oCachedRowSet.next()) {
+					if ("26".equals(oCachedRowSet.getString("id_deporte"))) {
+						if (oCachedRowSet.getString("id_status_jugada").equals(Constants.STATUS_JUGADA_PERDEDOR)) {
+							perdedor = true;
+						} else {
+							perdedor = false;
+							break;
+						}
+					}
+				}
+				
 
 				if (!suspendido && !perdedor) {
 					boolean gano = false;
@@ -328,6 +342,9 @@ public class JugadaDAO {
 							}
 						if (!gano) {
 							apostado = 0;
+							if(perdedorTodas && animalito){
+								oJugadaTO.setIdStatusJugada(Constants.STATUS_JUGADA_PERDEDOR);
+							}
 						} else {
 							// recalculamos el premio
 							// aplicamos las reglas de pago x veces
@@ -376,7 +393,8 @@ public class JugadaDAO {
 						}
 					}
 					if (!tieneBono) {
-						oJugadaTO.setIdStatusJugada(Constants.STATUS_JUGADA_ANULADA);
+						oJugadaTO.setIdStatusJugada(animalito ? 
+								Constants.STATUS_JUGADA_PERDEDOR: Constants.STATUS_JUGADA_ANULADA);
 						oJugadaTO.setMontoPagado("0");
 						//						if (rolSupervisor.equals(Constants.ROL_ADMINISTRADOR)) {
 						if (rolUsuario.equals(Constants.ROL_JUGADOR)) {

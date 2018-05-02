@@ -94,7 +94,7 @@ if(session.getAttribute("sendErrores")!=null) {
 						apuesta = apuesta+(apuesta*(logro[y].value/100));
 						}
 					} else if(logro[y].value<0) {
-						apuesta = apuesta+(apuesta*((logro[y].value*-1)/100));
+						apuesta = apuesta+(apuesta / ((logro[y].value*-1) / 100));
 					}
 					montoPremio.value = Math.round(apuesta);
 				}
