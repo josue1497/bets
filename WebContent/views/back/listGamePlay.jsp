@@ -375,12 +375,6 @@ function isValido(jug,j,n,nombre,ref,deporte) {
 
 	//alert(jug+' '+j+' '+n+' '+nombre+' '+ref+' '+deporte);
 	// validamos por id de juego
-// 	if(document.getElementsByName("JuegoSeleccionado").value==undefined)
-// 		document.getElementsByName("JuegoSeleccionado").value='false';
-	
-// 	if(document.getElementsByName("AnimalitoSeleccionado").value==undefined)
-// 		document.getElementsByName("AnimalitoSeleccionado").value='false';
-	
 	var bloqueados = ',<%=request.getAttribute("JUEGOS_BLOQUEADOS")%>,';
 	for(var p=0; p < jug.length; p++) {
 		var r1 = ","+j+"-"+jug[p].juego+",";
@@ -568,6 +562,12 @@ function vaciar() {
         }
         frm.montoApostar.value="";
         frm.montoPremio.value=0;
+        frm.resultCadena="";
+        teclaPulsada.length=0;
+        document.getElementById('franjaErrores').innerHTML='';
+		animSel=false;
+		gameSel=false;
+		acumulatedSports.length=0;
 }
 function desmarcar() {
 	var ele = "";
@@ -610,6 +610,7 @@ function findReferencia(numRef) {
 function marcar(key,obj) {
     if(key.keyCode==27){
             vaciar();
+            desmarcar();
             return;
     }
 	var ant = obj.value;
@@ -705,7 +706,7 @@ function changeCellOut(el) {
 <%if(session.getAttribute("bloqueoPantalla")!=null){%>	
 <meta http-equiv="refresh" content="2500;url=<%=basePath%>listGamePlay.do">
 <%}%>
-<form name="frmListGamePlay" action="/game/listGamePlay.do" method="POST" style="margin:0px" onSubmit='return true;'>
+<form name="frmListGamePlay" action="/game/listGamePlay.do" method="POST" style="margin:0px" onSubmit='return false;'>
 <input type="hidden" name="idDeporte" value=""/>
 <input type="hidden" name="agregar" value="false"/>
 <input type="hidden" name="teaser" value="false"/>

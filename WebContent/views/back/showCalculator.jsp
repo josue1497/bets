@@ -28,12 +28,13 @@ if(session.getAttribute("sendErrores")!=null) {
 	<head>
 	<script>
 	String.prototype.trim = function() { return this.replace(/^\s*|\s*$/g,""); };
-	String.prototype.endsWith = function(str){return (this.match(str+"$")==str)}
-	String.prototype.startsWith = function(str){return (this.match("^"+str)==str)}
+	String.prototype.endsWith = function(str){return (this.match(str+"$")==str)};
+	String.prototype.startsWith = function(str){return (this.match("^"+str)==str)};
 	
 	var logrosCalc = new Array();
 	var reglasPago = null;
 	var cantidadFilas=0;
+	var teclaPulsada=new Array();
 	<%if(Constants.isNull(usuario.getPagoVeces(),"").equals("")){%>
 		var pagoVeces = new Array();
 	<%} else {%>
@@ -72,6 +73,16 @@ if(session.getAttribute("sendErrores")!=null) {
 		if(obj!=null && (typeof obj)!='undefined') {
 			obj.value = obj.value.replace(/[^0-9]/g,'');
 			obj.value = obj.value.replace(/(^0)/g,'');
+			if(!isNaN(event.key)){
+			teclaPulsada.push(event.key);
+			console.log(teclaPulsada);
+			}
+			console.log(event.key);
+			if((event.key==="Backspace"||event.key==="Delete")){
+				teclaPulsada.pop();
+				console.log("cadena: "+resultCadena);
+			}
+			
 		}
 	
 		with(document.forms[0]) {
@@ -99,11 +110,23 @@ if(session.getAttribute("sendErrores")!=null) {
 					montoPremio.value = Math.round(apuesta);
 				}
 			}
+			
+			
+			
+			var resultCadena="";
+			for(var a=0;a<teclaPulsada.length;a++){
+				resultCadena=resultCadena+teclaPulsada[a];
+				console.log(resultCadena);
+			}
+			
+			
 			if(animalito){
-				apuesta=apuesta*30;
 				montoPremio.value = Math.round(apuesta);
 				cantidadFilas.value=logrosCalc.length;
-				montoApostar.value = montoApostar.value*logrosCalc.length;
+				
+				montoApostar.value = parseInt(resultCadena)*logrosCalc.length;
+				apuesta = parseInt((montoApostar.value/cantidadFilas.value)*30);
+				montoPremio.value = Math.round(apuesta);
 			}
 			
 			
@@ -189,6 +212,7 @@ if(session.getAttribute("sendErrores")!=null) {
 				deporte[f].value="";
 				
 			}
+			teclaPulsada.length=0;
 		}
 	}
 	
@@ -241,6 +265,23 @@ if(session.getAttribute("sendErrores")!=null) {
 		return premio;
 	}
 	
+	function onKeyDownHandler(event) {
+
+	    var codigo = event.key;
+
+	    console.log("Presionada: " + codigo);
+	     
+	    if(codigo === 13){
+	      console.log("Tecla ENTER");
+	    }
+
+	    if(codigo >= 65 && codigo <= 90){
+	      console.log(String.fromCharCode(codigo));
+	    }
+
+	     
+	}
+	
 	</script>
 	</head>
 	<body style="background-color:#000;">
@@ -269,7 +310,9 @@ if(session.getAttribute("sendErrores")!=null) {
 								<td class="calculadora" >Monto de la apuesta&nbsp;:</td>
 								<td  align="right" style="color:#ffffff;">
 									<%=Constants.getDominio(request).getMoneda()%>&nbsp;
-									<input type="text" name="montoApostar" maxlength="9" size="9"  style="text-align:right;font-size:18px;font-weight:bold;background:#c0c0c0;"
+									<input type="text" name="montoApostar" maxlength="9" size="9"  style="text-align:right;font-size:18px;font-weight:bold;" 
+										onkeyup="premio(event,this)"
+										style="background:#c0c0c0;" 
 										onfocus="this.style.background='yellow'" 
 										onblur="this.style.background='#c0c0c0'" >
 								</td>
@@ -323,9 +366,7 @@ if(session.getAttribute("sendErrores")!=null) {
 			<center>
 			<span id="installOK">
 			<%if(usuario.getIdRol().equals(Constants.ROL_JUGADOR_DE_TAQUILLA)){%>
-			  <a class="enlaceBoton" onclick="premio(event,document.forms[0].montoApostar)">Calcular Premio</a> <br>
 		      <a class="enlaceBoton" href="#" onclick="enviar()" style="width:200px;"><bean:message key="boton.agregarImprimir"/></a> 
-
 		      <br/>
 		      <br/>
 			  <%if(session.getAttribute("bloqueoPantalla")==null){%>	
