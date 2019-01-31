@@ -43,7 +43,7 @@ public class RegisterGameSaveAction extends Action {
 			
 			UsuarioIF usuario = Constants.getUserSession(request);
 			
-			if(!usuario.getIdRol().equals(Constants.ROL_ADMINISTRADOR) || usuario.getIdRol().equals(Constants.ROL_ADMINISTRADOR_DE_TAQUILLA)) {
+			if(!usuario.getIdRol().equals(Constants.ROL_ADMINISTRADOR) && !usuario.getIdRol().equals(Constants.ROL_ADMINISTRADOR_DE_TAQUILLA)) {
 				return mapping.findForward("end");
 			}
 			

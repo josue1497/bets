@@ -69,7 +69,6 @@ Ticket Nro.:<%=Constants.numero(ticket.getString("id_jugada"),10)%><br/>
 Fecha:<%=ticket.getString("dia")%><br/>
 Hora:<%=ticket.getString("hora")%><br/><br/>
 Jugada <%=Constants.getDominio(request).getMoneda()%> <%=ticket.getString("jugada")%>
-Clave:<%=Encriptor.getSID(ticket.getString("id_jugada"))%>
 <br/><br/>
 <script language="javascript">
 function send(orden) {

@@ -28,11 +28,14 @@ if(session.getAttribute("sendErrores")!=null) {
 	<head>
 	<script>
 	String.prototype.trim = function() { return this.replace(/^\s*|\s*$/g,""); };
-	String.prototype.endsWith = function(str){return (this.match(str+"$")==str)}
-	String.prototype.startsWith = function(str){return (this.match("^"+str)==str)}
+	String.prototype.endsWith = function(str){return (this.match(str+"$")==str)};
+	String.prototype.startsWith = function(str){return (this.match("^"+str)==str)};
 	
 	var logrosCalc = new Array();
 	var reglasPago = null;
+	var cantidadFilas=0;
+	var teclaPulsada=new Array();
+	var animalito= false;
 	<%if(Constants.isNull(usuario.getPagoVeces(),"").equals("")){%>
 		var pagoVeces = new Array();
 	<%} else {%>
@@ -57,7 +60,7 @@ if(session.getAttribute("sendErrores")!=null) {
 				numero[k].value=logrosCalc[k].numero;
 				padre[k].value=logrosCalc[k].padre;
 				deporte[k].value=logrosCalc[k].deporte;
-	
+				
 				// si es juego teaser ocultamos el logro
 				logro[k].style.color='#fff';
 				if(logrosCalc[k].referencia.charAt(0)=='T') {
@@ -69,10 +72,49 @@ if(session.getAttribute("sendErrores")!=null) {
 			}
 		}
 	}
+	
+	function getValueKey(value){
+		
+		switch(value){		
+		case 48:case 96:return "0";break;
+		case 49:case 97:return "1";break;
+		case 50:case 98:return "2";break;
+		case 51:case 99:return "3";break;
+		case 52:case 100:return "4";break;
+		case 53:case 101:return "5";break;
+		case 54:case 102:return "6";break;
+		case 55:case 103:return "7";break;
+		case 56:case 104:return "8";break;
+		case 57:case 105:return "9";break;
+		case 8: return "borrar";break;
+		default:break;
+		
+			
+		}
+	}
+	
 	function premio(key,obj) {
+		try{
 		if(obj!=null && (typeof obj)!='undefined') {
 			obj.value = obj.value.replace(/[^0-9]/g,'');
 			obj.value = obj.value.replace(/(^0)/g,'');
+			
+			if(!isNaN(getValueKey(key.keyCode))){
+				teclaPulsada.push(getValueKey(key.keyCode));
+			}			
+						
+				if(getValueKey(key.keyCode)=="borrar"){
+					teclaPulsada.pop();
+					
+					}
+				if(teclaPulsada.length==0){
+					obj.value="";
+				}
+				if(key.keyCode=="46" || key.keyCode=="20"){
+					teclaPulsada.length=0;
+					obj.value="";
+				}
+			
 		}
 	
 		with(document.forms[0]) {
@@ -87,13 +129,36 @@ if(session.getAttribute("sendErrores")!=null) {
 			for(var y=0; y<logrosCalc.length; y++) {
 				if(cuenta) {
 					if(logro[y].value>0) {
+						if(logrosCalc[y].deporte=="26"){
+							animalito = true;
+							}
+						else if(logrosCalc[y].deporte!="26"){
 						apuesta = apuesta+(apuesta*(logro[y].value/100));
+						}
 					} else if(logro[y].value<0) {
-						apuesta = apuesta+(apuesta/((logro[y].value*-1)/100));
+						apuesta = apuesta+(apuesta / ((logro[y].value*-1) / 100));
 					}
 					montoPremio.value = Math.round(apuesta);
 				}
 			}
+			
+			
+			
+			var resultCadena="";
+			for(var a=0;a<teclaPulsada.length;a++){
+				resultCadena=resultCadena+teclaPulsada[a];
+				
+			}
+			
+			
+			if(animalito){
+				montoPremio.value = Math.round(apuesta);
+				cantidadFilas.value=logrosCalc.length;
+				apuesta = parseInt((montoApostar.value/cantidadFilas.value)*30);
+				montoPremio.value = Math.round(apuesta);
+				montoApostar.value = teclaPulsada.length>0 ? parseInt(resultCadena)*logrosCalc.length : "";
+			}
+			
 			
 			// aplicamos las reglas
 			montoApuesta=parseInt(montoApostar.value);
@@ -112,8 +177,9 @@ if(session.getAttribute("sendErrores")!=null) {
 			}
 			// validamos el monto del premio con las veces  establecidas
 			montoPremio.value = calcularPagoVeces(montoPremio.value);
-			
+						
 			if(key && key.keyCode==13){
+				
 			
 				if (montoApuesta< <%=minJugada%>)
 				{
@@ -122,20 +188,16 @@ if(session.getAttribute("sendErrores")!=null) {
 				}
 				
 				if(confirm("Desea crear el ticket","Mensaje")) {
-					
-					
-					
-					if(window.parent.send(document.forms[0])) {
-						document.forms[0].isFree.value=(window.parent.isFree()?1:0);
-						window.parent.desmarcar();
-						document.forms[0].submit();
-					}
+					enviar();
 				} else {
 					try {
 						document.forms[0].numeroRef.focus();
 					} catch(e){}
 				}
 			}
+		}
+		}catch(e){
+			alert(e);
 		}
 	}
 	
@@ -152,8 +214,10 @@ if(session.getAttribute("sendErrores")!=null) {
 		var valido = window.parent.send(document.forms[0]);
 		if(valido) {
 			document.forms[0].isFree.value=(window.parent.isFree()?1:0);
+			document.forms[0].agregar.value="true";
 			window.parent.desmarcar();
 			document.forms[0].submit();
+			limpiar();
 		} else {
 			try {
 				document.forms[0].numeroRef.focus();
@@ -173,10 +237,13 @@ if(session.getAttribute("sendErrores")!=null) {
 				numero[f].value="";
 				padre[f].value="";
 				deporte[f].value="";
+				
 			}
+			teclaPulsada.length=0;
 		}
 	}
 	
+		
 	function imprimir() {
 		window.open("<%=basePath%>printTicket.do","ventana","toolbar=no,location=no,status=no,menubar=no,rezisable=no,width=300px,height=500px,alwaysRaised=yes");
 	}
@@ -226,6 +293,8 @@ if(session.getAttribute("sendErrores")!=null) {
 		return premio;
 	}
 	
+	
+	
 	</script>
 	</head>
 	<body style="background-color:#000;">
@@ -243,6 +312,7 @@ if(session.getAttribute("sendErrores")!=null) {
 	<input type="hidden" name="teaser" value="false"/>
 	<input type="hidden" name="isFree" value="0"/>
 	<input type="hidden" name="simple" value="true"/>
+	<input type="hidden" name="cantidadFilas" value="0"/>
 	<fieldset>
 			<legend class="tituloTablaSup">CALCULO DE LA JUGADA</legend>
 			<table align="center" width="100%"  border="0">
@@ -253,7 +323,8 @@ if(session.getAttribute("sendErrores")!=null) {
 								<td class="calculadora" >Monto de la apuesta&nbsp;:</td>
 								<td  align="right" style="color:#ffffff;">
 									<%=Constants.getDominio(request).getMoneda()%>&nbsp;
-									<input type="text" name="montoApostar" maxlength="9" size="9"  style="text-align:right;font-size:18px;font-weight:bold;" onkeyup="premio(event,this)"
+									<input type="text" name="montoApostar" maxlength="9" size="9"  style="text-align:right;font-size:18px;font-weight:bold;" 
+										onkeyup="premio(event,this)"
 										style="background:#c0c0c0;" 
 										onfocus="this.style.background='yellow'" 
 										onblur="this.style.background='#c0c0c0'" >
@@ -273,12 +344,12 @@ if(session.getAttribute("sendErrores")!=null) {
 				</tr>
 				<%for(int i=0; i<logros;i++) {%>
 				<tr>
-					<td class="calculadora" ><input type="hidden" name="codigo" class="inputTextSingleCalc"/><input type="hidden" name="padre" class="inputTextSingleCalc"/>
+					<td class="calculadora result" ><input type="hidden" name="codigo" class="inputTextSingleCalc"/><input type="hidden" name="padre" class="inputTextSingleCalc"/>
 						<input type="hidden" name="deporte" /><input type="text" name="tipo" class="inputTextSingleCalc"  readOnly="yes" style="width:20px"/></td>
-					<td class="calculadora" ><input type="text" name="cantidad" class="inputTextSingleCalc" style="width:30px"/  readOnly="yes"></td>
-					<td class="calculadora" ><input type="text" name="referencia" class="inputTextSingleLeftCalc" style="width:60px" readOnly="yes"/></td>
-					<td class="calculadora"><input type="text" name="equipo" class="inputTextSingleCalc" style="width:70px;text-align:left;"  readOnly="yes"/></td>
-					<td class="calculadora" >
+					<td class="calculadora result" ><input type="text" name="cantidad" class="inputTextSingleCalc" style="width:30px"/  readOnly="yes"></td>
+					<td class="calculadora result" ><input type="text" name="referencia" class="inputTextSingleLeftCalc" style="width:60px" readOnly="yes"/></td>
+					<td class="calculadora result"><input type="text" name="equipo" class="inputTextSingleCalc" style="width:70px;text-align:left;"  readOnly="yes"/></td>
+					<td class="calculadora result" >
 						<input type="text" name="logro" class="inputTextSingleRightCalc" size="3" readOnly="yes"/>
 						<input type="hidden" name="juego"/>
 						<input type="hidden" name="numero"/>
@@ -308,8 +379,7 @@ if(session.getAttribute("sendErrores")!=null) {
 			<center>
 			<span id="installOK">
 			<%if(usuario.getIdRol().equals(Constants.ROL_JUGADOR_DE_TAQUILLA)){%>
-		      <a class="enlaceBoton" href="#" onclick="enviar()" style="width:200px;"><bean:message key="boton.agregarImprimir"/></a> 
-
+		      <a class="enlaceBoton" href="#" onclick="enviar()" id="btnEnviar" style="width:200px;"><bean:message key="boton.agregarImprimir"/></a> 
 		      <br/>
 		      <br/>
 			  <%if(session.getAttribute("bloqueoPantalla")==null){%>	

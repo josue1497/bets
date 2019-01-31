@@ -136,123 +136,121 @@ function ordenarAnimalitos(cadena){
 	var data = new Array(cadena.length);
 			
 	for (var k = 0; k < cadena.length; k++) {
-		switch(cadena[k].text){
-	case "0 DELFIN 0":
+		var value = cadena[k].text.substr(0,2);
+		switch(value){
+	case "0 ":
 		data[0]=cadena[k];
 		break;
-	case "00 TUCAN 00":
+	case "00":
 		data[1]=cadena[k];
 		break;
-	case "1 CARNERO 1":
+	case "1 ":
 		data[2]=cadena[k];
 		break;
-	case "2 TORO 2":
+	case "2 ":
 		data[3]=cadena[k];
 		break;
-	case "3 CIEMPIES 3":
+	case "3 ":
 		data[4]=cadena[k];
 		break;
-	case "4 ALACRAN 4":
+	case "4 ":
 		data[5]=cadena[k];
 		break;
-	case "5 LEON 5":
+	case "5 ":
 		data[6]=cadena[k];
 		break;
-	case "6 RANA 6":
+	case "6 ":
 		data[7]=cadena[k];
 		break;
-	case "7 PERICO 7":
+	case "7 ":
 		data[8]=cadena[k];
 		break;
-	case "8 RATON 8":
+	case "8 ":
 		data[9]=cadena[k];
 		break;
-	case "9 AGUILA 9":
+	case "9 ":
 		data[10]=cadena[k];
 		break;
-	case "10 TIGRE 10":
+	case "10":
 		data[11]=cadena[k];
 		break;
-	case "11 GATO 11":
+	case "11":
 		data[12]=cadena[k];
 		break;
-	case "12 CABALLO 12":
+	case "12":
 		data[13]=cadena[k];
 		break;
-	case "13 MONO 13":
+	case "13":
 		data[14]=cadena[k];
 		break;
-	case "14 PALOMA 14":
+	case "14":
 		data[15]=cadena[k];
 		break;
-	case "15 ZORRO 15":
+	case "15":
 		data[16]=cadena[k];
 		break;
-	case "16 OSO 16":
+	case "16":
 		data[17]=cadena[k];
 		break;
-	case "17 PAVO 17":
+	case "17":
 		data[18]=cadena[k];
 		break;
-	case "18 BURRO 18":
+	case "18":
 		data[19]=cadena[k];
 		break;
-	case "19 CHIVO 19":
+	case "19":
 		data[20]=cadena[k];
 		break;
-	case "20 COCHINO 20":
+	case "20":
 		data[21]=cadena[k];
 		break;
-	case "21 GALLO 21":
+	case "21":
 		data[22]=cadena[k];
 		break;
-	case "22 CAMELLO 22":
+	case "22":
 		data[23]=cadena[k];
 		break;
-	case "23 CEBRA 23":
+	case "23":
 		data[24]=cadena[k];
 		break;
-	case "24 IGUANA 23":
+	case "24":
 		data[25]=cadena[k];
 		break;
-	case "24 IGUANA 24":
+	case "25":
 		data[26]=cadena[k];
 		break;
-	case "25 GALLINA 25":
+	case "26":
 		data[27]=cadena[k];
 		break;
-	case "26 VACA 26":
+	case "27":
 		data[28]=cadena[k];
 		break;
-	case "27 PERRO 27":
+	case "28":
 		data[29]=cadena[k];
 		break;
-	case "28 ZAMURO 28":
+	case "29":
 		data[30]=cadena[k];
 		break;
-	case "29 ELEFANTE 29":
+	case "30":
 		data[31]=cadena[k];
 		break;
-	case "30 CAIMAN 30":
+	case "31":
 		data[32]=cadena[k];
 		break;
-	case "31 MURCIELAGO 31":
+	case "32":
 		data[33]=cadena[k];
 		break;
-	case "32 ARDILLA 32":
+	case "33":
 		data[34]=cadena[k];
 		break;
-	case "33 PESCADO 33":
+	case "34":
 		data[35]=cadena[k];
 		break;
-	case "34 VENADO 34":
+	case "35":
 		data[36]=cadena[k];
 		break;
-	case "35 JIRAFA 35":
+	case "36":
 		data[37]=cadena[k];
-		break;
-	case "36 CULEBRA 36":
-		data[38]=cadena[k];
 		break;
 		}
 		

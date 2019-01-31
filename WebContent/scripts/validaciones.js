@@ -9,8 +9,8 @@ if ( window.ActiveXObject ) {
 }
 
 String.prototype.trim = function() { return this.replace(/^\s*|\s*$/g,""); };
-String.prototype.endsWith = function(str){return (this.match(str+"$")==str)}
-String.prototype.startsWith = function(str){return (this.match("^"+str)==str)}
+String.prototype.endsWith = function(str){return (this.match(str+"$")==str)};
+String.prototype.startsWith = function(str){return (this.match("^"+str)==str)};
 
 function trim(s) {
 	if (typeof s!="undefined") {
@@ -191,7 +191,7 @@ function isEmptyDec(objeto,mensaje,minimo,rangoMinimo,rangoMaximo) {
 }
 
 
-// envia un alert si el objeto no contiene una dirección valida de correo y retorna false
+// envia un alert si el objeto no contiene una direcciï¿½n valida de correo y retorna false
 function isEmptyMail(objeto,mensaje) {
 	if ( trim(objeto.value)=="" || !isEmail(objeto.value) ) {
 		if ( !isEmail(objeto.value) ) {
@@ -360,9 +360,9 @@ function DateFormat(vDateName, vDateValue, e, dateCheck, dateType)  {
     }
     if(dateCheck) {
       if (!dateValid(vDateName.value)) {
-         //alert("Fecha no válida\nIntroduzcala de nuevo "+err);
+         //alert("Fecha no vï¿½lida\nIntroduzcala de nuevo "+err);
          vDateName.value = "";
-         alert("Fecha no válida\nIntroduzcala nuevamente ");
+         alert("Fecha no vï¿½lida\nIntroduzcala nuevamente ");
          vDateName.focus();
          vDateName.select();
          return false;
@@ -739,7 +739,7 @@ function getMacAddress() {
       var properties = service.ExecQuery("SELECT * FROM Win32_NetworkAdapter");
       var e = new Enumerator (properties);
       var sep="";
-      var notValid1 = "Adaptador asínc. de RAS";
+      var notValid1 = "Adaptador asï¿½nc. de RAS";
       var notValid2 = "Minipuerto del administrador de paquetes";
       var notValid3 = "Deterministic Network Enhancer Miniport";
       for (;!e.atEnd();e.moveNext ()) {

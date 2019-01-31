@@ -5,7 +5,7 @@
 <TITLE>El Mejor Sitio para apuestas</TITLE>
 </HEAD>
 <FRAMESET cols="100%" frameborder="0">
-  <FRAME src="/game/start.do">
+  <FRAME src="start.do">
   <NOFRAMES>
       Este navegador no soporta marcos.
   </NOFRAMES>
