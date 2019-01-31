@@ -28,13 +28,11 @@ if(session.getAttribute("sendErrores")!=null) {
 	<head>
 	<script>
 	String.prototype.trim = function() { return this.replace(/^\s*|\s*$/g,""); };
-	String.prototype.endsWith = function(str){return (this.match(str+"$")==str)};
-	String.prototype.startsWith = function(str){return (this.match("^"+str)==str)};
+	String.prototype.endsWith = function(str){return (this.match(str+"$")==str)}
+	String.prototype.startsWith = function(str){return (this.match("^"+str)==str)}
 	
 	var logrosCalc = new Array();
 	var reglasPago = null;
-	var cantidadFilas=0;
-	var teclaPulsada=new Array();
 	<%if(Constants.isNull(usuario.getPagoVeces(),"").equals("")){%>
 		var pagoVeces = new Array();
 	<%} else {%>
@@ -47,6 +45,7 @@ if(session.getAttribute("sendErrores")!=null) {
 		reglasPago=reglasPagoPadre;
 		limpiar();
 		with(document.forms[0]) {
+			premio(null,null);
 			for(var k=0; k<logrosCalc.length; k++) {
 				codigo[k].value=logrosCalc[k].codigo;
 				tipo[k].value=logrosCalc[k].tipo;
@@ -58,13 +57,14 @@ if(session.getAttribute("sendErrores")!=null) {
 				numero[k].value=logrosCalc[k].numero;
 				padre[k].value=logrosCalc[k].padre;
 				deporte[k].value=logrosCalc[k].deporte;
-				
+	
 				// si es juego teaser ocultamos el logro
 				logro[k].style.color='#fff';
 				if(logrosCalc[k].referencia.charAt(0)=='T') {
 					logro[k].style.color='#000';
 				} 
 	
+				premio(null,null);
 				
 			}
 		}
@@ -73,16 +73,6 @@ if(session.getAttribute("sendErrores")!=null) {
 		if(obj!=null && (typeof obj)!='undefined') {
 			obj.value = obj.value.replace(/[^0-9]/g,'');
 			obj.value = obj.value.replace(/(^0)/g,'');
-			if(!isNaN(event.key)){
-			teclaPulsada.push(event.key);
-			console.log(teclaPulsada);
-			}
-			console.log(event.key);
-			if((event.key==="Backspace"||event.key==="Delete")){
-				teclaPulsada.pop();
-				console.log("cadena: "+resultCadena);
-			}
-			
 		}
 	
 		with(document.forms[0]) {
@@ -97,38 +87,13 @@ if(session.getAttribute("sendErrores")!=null) {
 			for(var y=0; y<logrosCalc.length; y++) {
 				if(cuenta) {
 					if(logro[y].value>0) {
-						if(logrosCalc[y].deporte=="26"){
-							var animalito = "true";
-							continue;
-						}
-						else if(logrosCalc[y].deporte!="26"){
 						apuesta = apuesta+(apuesta*(logro[y].value/100));
-						}
 					} else if(logro[y].value<0) {
-						apuesta = apuesta+(apuesta / ((logro[y].value*-1) / 100));
+						apuesta = apuesta+(apuesta/((logro[y].value*-1)/100));
 					}
 					montoPremio.value = Math.round(apuesta);
 				}
 			}
-			
-			
-			
-			var resultCadena="";
-			for(var a=0;a<teclaPulsada.length;a++){
-				resultCadena=resultCadena+teclaPulsada[a];
-				console.log(resultCadena);
-			}
-			
-			
-			if(animalito){
-				montoPremio.value = Math.round(apuesta);
-				cantidadFilas.value=logrosCalc.length;
-				
-				montoApostar.value = parseInt(resultCadena)*logrosCalc.length;
-				apuesta = parseInt((montoApostar.value/cantidadFilas.value)*30);
-				montoPremio.value = Math.round(apuesta);
-			}
-			
 			
 			// aplicamos las reglas
 			montoApuesta=parseInt(montoApostar.value);
@@ -187,10 +152,8 @@ if(session.getAttribute("sendErrores")!=null) {
 		var valido = window.parent.send(document.forms[0]);
 		if(valido) {
 			document.forms[0].isFree.value=(window.parent.isFree()?1:0);
-			document.forms[0].agregar.value="true";
 			window.parent.desmarcar();
 			document.forms[0].submit();
-			limpiar();
 		} else {
 			try {
 				document.forms[0].numeroRef.focus();
@@ -210,9 +173,7 @@ if(session.getAttribute("sendErrores")!=null) {
 				numero[f].value="";
 				padre[f].value="";
 				deporte[f].value="";
-				
 			}
-			teclaPulsada.length=0;
 		}
 	}
 	
@@ -265,23 +226,6 @@ if(session.getAttribute("sendErrores")!=null) {
 		return premio;
 	}
 	
-	function onKeyDownHandler(event) {
-
-	    var codigo = event.key;
-
-	    console.log("Presionada: " + codigo);
-	     
-	    if(codigo === 13){
-	      console.log("Tecla ENTER");
-	    }
-
-	    if(codigo >= 65 && codigo <= 90){
-	      console.log(String.fromCharCode(codigo));
-	    }
-
-	     
-	}
-	
 	</script>
 	</head>
 	<body style="background-color:#000;">
@@ -299,7 +243,6 @@ if(session.getAttribute("sendErrores")!=null) {
 	<input type="hidden" name="teaser" value="false"/>
 	<input type="hidden" name="isFree" value="0"/>
 	<input type="hidden" name="simple" value="true"/>
-	<input type="hidden" name="cantidadFilas" value="0"/>
 	<fieldset>
 			<legend class="tituloTablaSup">CALCULO DE LA JUGADA</legend>
 			<table align="center" width="100%"  border="0">
@@ -310,8 +253,7 @@ if(session.getAttribute("sendErrores")!=null) {
 								<td class="calculadora" >Monto de la apuesta&nbsp;:</td>
 								<td  align="right" style="color:#ffffff;">
 									<%=Constants.getDominio(request).getMoneda()%>&nbsp;
-									<input type="text" name="montoApostar" maxlength="9" size="9"  style="text-align:right;font-size:18px;font-weight:bold;" 
-										onkeyup="premio(event,this)"
+									<input type="text" name="montoApostar" maxlength="9" size="9"  style="text-align:right;font-size:18px;font-weight:bold;" onkeyup="premio(event,this)"
 										style="background:#c0c0c0;" 
 										onfocus="this.style.background='yellow'" 
 										onblur="this.style.background='#c0c0c0'" >
@@ -331,12 +273,12 @@ if(session.getAttribute("sendErrores")!=null) {
 				</tr>
 				<%for(int i=0; i<logros;i++) {%>
 				<tr>
-					<td class="calculadora result" ><input type="hidden" name="codigo" class="inputTextSingleCalc"/><input type="hidden" name="padre" class="inputTextSingleCalc"/>
+					<td class="calculadora" ><input type="hidden" name="codigo" class="inputTextSingleCalc"/><input type="hidden" name="padre" class="inputTextSingleCalc"/>
 						<input type="hidden" name="deporte" /><input type="text" name="tipo" class="inputTextSingleCalc"  readOnly="yes" style="width:20px"/></td>
-					<td class="calculadora result" ><input type="text" name="cantidad" class="inputTextSingleCalc" style="width:30px"/  readOnly="yes"></td>
-					<td class="calculadora result" ><input type="text" name="referencia" class="inputTextSingleLeftCalc" style="width:60px" readOnly="yes"/></td>
-					<td class="calculadora result"><input type="text" name="equipo" class="inputTextSingleCalc" style="width:70px;text-align:left;"  readOnly="yes"/></td>
-					<td class="calculadora result" >
+					<td class="calculadora" ><input type="text" name="cantidad" class="inputTextSingleCalc" style="width:30px"/  readOnly="yes"></td>
+					<td class="calculadora" ><input type="text" name="referencia" class="inputTextSingleLeftCalc" style="width:60px" readOnly="yes"/></td>
+					<td class="calculadora"><input type="text" name="equipo" class="inputTextSingleCalc" style="width:70px;text-align:left;"  readOnly="yes"/></td>
+					<td class="calculadora" >
 						<input type="text" name="logro" class="inputTextSingleRightCalc" size="3" readOnly="yes"/>
 						<input type="hidden" name="juego"/>
 						<input type="hidden" name="numero"/>
@@ -367,6 +309,7 @@ if(session.getAttribute("sendErrores")!=null) {
 			<span id="installOK">
 			<%if(usuario.getIdRol().equals(Constants.ROL_JUGADOR_DE_TAQUILLA)){%>
 		      <a class="enlaceBoton" href="#" onclick="enviar()" style="width:200px;"><bean:message key="boton.agregarImprimir"/></a> 
+
 		      <br/>
 		      <br/>
 			  <%if(session.getAttribute("bloqueoPantalla")==null){%>	

@@ -148,9 +148,6 @@ String.prototype.trim = function() { return this.replace(/^\s*|\s*$/g,""); };
 
 var isTaquilla = <%=isTaquilla%>;
 var logrosCalc = new Array();
-var acumulatedSports = new Array();
-var gameSel = false;
-var animSel = false;
 var saldoActual = <%=saldoNumerico%>;
 var saldoFreeActual = <%=saldoFreeNumerico%>;
 var reglasPago = <%=Constants.getReglasPagoJS()%>;
@@ -173,9 +170,8 @@ function send(forma) {
 		setPuertoTicket();
 		if(typeof(getCookie("puertoTicket"))=='undefined') {
 			alert("El puerto no fue grabado, habilite las cookies en el navegador");
-			return true;
+			return false;
 		}
-		return true;
 	}
 	<%}%>
 
@@ -428,27 +424,15 @@ function isValido(jug,j,n,nombre,ref,deporte) {
 		return -1;
 	}
 	
-	if(deporte==<%=Constants.ID_DEPORTE_ANIMALITOS%> &&  !gameSel){
-		animSel=true;
-	}
-	if(deporte!=<%=Constants.ID_DEPORTE_ANIMALITOS%> && !animSel){
-		gameSel=true;
-	}
-	
-	if(deporte!=<%=Constants.ID_DEPORTE_ANIMALITOS%> && animSel )
-		return -2;
-	if(deporte==<%=Constants.ID_DEPORTE_ANIMALITOS%> && gameSel)
-		return -2;
-	
 	var con=0;
 	var todos = n;
 	var sep="-";
 	for(var p=0; p < jug.length; p++) {
 		//alert(parseInt(jug[p].padre)+"  "+parseInt(j));
-		if(parseInt(jug[p].padre)===parseInt(j) && deporte!=<%=Constants.ID_DEPORTE_ANIMALITOS%>) {
+		if(parseInt(jug[p].padre)===parseInt(j)) {
 			todos += sep + jug[p].numero;
 			con++;
-			}
+		}
 	}
 	if(con===0) {
 		return 0;
@@ -562,12 +546,6 @@ function vaciar() {
         }
         frm.montoApostar.value="";
         frm.montoPremio.value=0;
-        frm.resultCadena="";
-        teclaPulsada.length=0;
-        document.getElementById('franjaErrores').innerHTML='';
-		animSel=false;
-		gameSel=false;
-		acumulatedSports.length=0;
 }
 function desmarcar() {
 	var ele = "";
@@ -586,13 +564,7 @@ function desmarcar() {
 	}
 	try{
 		document.getElementById('franjaErrores').innerHTML='';
-		animSel=false;
-		gameSel=false;
-		acumulatedSports.length=0;
-		
-	}catch(e){
-		window.alert('error1');
-	}
+	}catch(e){}
 }
 function findReferencia(numRef) {
 	var ele = "";
@@ -610,7 +582,6 @@ function findReferencia(numRef) {
 function marcar(key,obj) {
     if(key.keyCode==27){
             vaciar();
-            desmarcar();
             return;
     }
 	var ant = obj.value;
@@ -665,27 +636,14 @@ function changeCellClick(el) {
 			if(hacer) {
 				if(el.onmouseout==null) {
 					changeCellOut(el);
-					window.frames.frmCalculadora.document.forms[0].montoApostar.value='';
-					window.frames.frmCalculadora.document.forms[0].montoPremio.value='';
 					el.onmouseout=function() {
 						el.style.background="";
 						el.style.color="#ffffff";
-						var pos =acumulatedSports.indexOf(el);
-						acumulatedSports.splice(pos,1);
-						console.log(acumulatedSports.length);
-						if(acumulatedSports.length==0){
-							animSel = false;
-							gameSel= false;
-						}
 					}
 				} else {
 					el.onmouseout=null;
-					window.frames.frmCalculadora.document.forms[0].montoApostar.value='';
-					window.frames.frmCalculadora.document.forms[0].montoPremio.value='';
 					el.style.background="#ffff33";
 					el.style.color="#000000";
-					acumulatedSports.push(el);
-					console.log(acumulatedSports.length);
 				}
 			}
 		}
@@ -710,8 +668,6 @@ function changeCellOut(el) {
 <input type="hidden" name="idDeporte" value=""/>
 <input type="hidden" name="agregar" value="false"/>
 <input type="hidden" name="teaser" value="false"/>
-<input type="hidden" name="AnimalitoSeleccionado" id="AnimalitoSeleccionado" value="false"/>
-<input type="hidden" name="JuegoSeleccionado" id="JuegoSeleccionado" value="false"/>
 <input type="hidden" name="dominioActual" value="<%=usuario.getDominio()%>"/>
 
 <table align="center" width="100%"  cellspacing="0" cellpadding="0" border="0">
@@ -792,7 +748,6 @@ function changeCellOut(el) {
 				    int i=0;
 				    boolean isIni = false;
 				    boolean isLiga = false;
-				    boolean isAnimalito=false;
 				    String liga = "";
 				    String cadLiga = "";
 				    String color0 = "#000;";
@@ -820,7 +775,6 @@ function changeCellOut(el) {
 							isLiga = !liga.equals(cadLiga);							
 							
 							isBeisbol = listaJuego.getString("id_deporte").equals(Constants.ID_EQUIPO_BEISBOL);
-							isAnimalito = listaJuego.getString("id_deporte").equals(Constants.ID_DEPORTE_ANIMALITOS);
 							
 							i = (isIni?-1:i);
 							i++;
@@ -858,23 +812,23 @@ function changeCellOut(el) {
 						<table align="center" width="100%" class="cuadro"  cellspacing="1" cellpadding="1" border="0">
 							<tr class="tituloLiga" style="background-color:<%=fondo%>">
 								<td colspan="<%=isActiveSRL && isBeisbol?6:5%>" style="border-right:4px solid #000">Juego Completo</td>
-								<%=!isAnimalito ? "<td colspan=\"3\" style=\"border-right:4px solid #000\">5to Inning o Primera Mitad</td>" : "" %>
-								<%=!isAnimalito ? "<td colspan=\"1\" style=\"border-right:4px solid #000\">1er Inning</td>" : "" %>
-								<%=!isAnimalito ? "<td colspan=\"1\">Anota 1ro</td>" : "" %>
+								<td colspan="3" style="border-right:4px solid #000">5to Inning o Primera Mitad</td>
+								<td colspan="1" style="border-right:4px solid #000">1er Inning</td>
+								<td colspan="1">Anota 1ro</td>
 							</tr>
 								<%}%>
 							<tr class="titulo1" style="background-color:<%=fondo%>">
 								<td width="45px">Ref.</td>
-								<td><span  class="fechaJuego"><%=Constants.getFechaLargaSqlToHtml(listaJuego.getString("fecha_ini"))%> <%=isAnimalito ? " - "+listaJuego.getString("campeonato"): "" %></span></td>
+								<td><span  class="fechaJuego"><%=Constants.getFechaLargaSqlToHtml(listaJuego.getString("fecha_ini"))%></span></td>
 								<td width="50" >M.Line</td>
-								<%=!isAnimalito ? "<td width=\"60\" >R.Line</td>" : "" %>
+								<td width="60" >R.Line</td>
 								<%=isActiveSRL && isBeisbol?"<td width='60' >S.R.Line</td>":""%>
-								<%=!isAnimalito ? "<td width=\"60\" >A/B</td>" : "" %>
-								<%=!isAnimalito ? "<td width=\"60\" >M.Line</td>" : "" %>
-								<%=!isAnimalito ? "<td width=\"60\" >R.Line</td>" : "" %>
-								<%=!isAnimalito ? "<td width=\"60\" >A/B</td>" : "" %>
-								<%=!isAnimalito ? "<td width=\"60\" >M.Line</td>" : "" %>
-								<%=!isAnimalito ? "<td width=\"60\" >M.Line</td>" : "" %>
+								<td width="60" >A/B</td>
+								<td width="60" >M.Line</td>
+								<td width="60" >R.Line</td>
+								<td width="60" >A/B</td>
+								<td width="60" >M.Line</td>
+								<td width="60" >M.Line</td>
 							</tr>
 							<%}%>
 							<tr  style="background-color:<%=fondo%>">
@@ -949,8 +903,6 @@ function changeCellOut(el) {
 		window.frames.frmCalculadora.document.forms[0].montoApostar.value='<%=cal.getMontoApostar()%>';
 		window.frames.frmCalculadora.document.forms[0].montoPremio.value='<%=cal.getMontoPremio()%>';
 	<%}%>
-	animSel=false;
-	gameSel=false;
 </script>
 <%}%>
 <script>
